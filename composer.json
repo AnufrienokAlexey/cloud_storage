@@ -1,0 +1,15 @@
+{
+    "name": "admin/cloud_storage",
+    "autoload": {
+        "psr-4": {
+            "Admin\\CloudStorage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexey Anufrienok",
+            "email": "alex.anufrienok@gmail.com"
+        }
+    ],
+    "require": {}
+}
