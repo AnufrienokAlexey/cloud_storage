@@ -1,8 +1,8 @@
 {
-    "name": "admin/cloud_storage",
+    "name": "alexey_anufrienok/cloud_storage",
     "autoload": {
         "psr-4": {
-            "Admin\\CloudStorage\\": "src/"
+            "App\\": "app/"
         }
     },
     "authors": [
