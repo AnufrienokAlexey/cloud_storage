@@ -1,6 +1,6 @@
 <?php
 
-use app\core\Router;
+//use app\core\Router;
 
 require 'app\lib\dev.php';
 
@@ -26,9 +26,16 @@ if (array_key_exists($url, $urlList)) {
         foreach (array_keys($item) as $method) {
             if ($method == $_SERVER['REQUEST_METHOD']) {
                 echo $method;
-                $obj = new Router();
-                $obj->list();
-                return;
+//                item поменять в цикле
+                $arr = explode('::', current($item));
+                debug($arr);
+                $class = 'app\core\\'.$arr[0];
+                $func = trim($arr[1], '()');
+                debug($class);
+                debug($func);
+                $obj = new $class();
+                $obj->$func();
+
             }
         }
     }

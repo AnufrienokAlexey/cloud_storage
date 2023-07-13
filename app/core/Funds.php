@@ -2,7 +2,7 @@
 
 namespace App\core;
 
-class Router
+class Funds
 {
     public function list()
     {
