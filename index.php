@@ -22,20 +22,14 @@ $urlList = [
 $url = trim($_SERVER['REQUEST_URI'], '/');
 
 if (array_key_exists($url, $urlList)) {
-    foreach ($urlList as $item) {
-        foreach (array_keys($item) as $method) {
+    foreach ($urlList as $url) {
+        foreach ($url as $method => $element) {
             if ($method == $_SERVER['REQUEST_METHOD']) {
-                echo $method;
-//                item поменять в цикле
-                $arr = explode('::', current($item));
-                debug($arr);
+                $arr = explode('::', $element);
                 $class = 'app\core\\'.$arr[0];
                 $func = trim($arr[1], '()');
-                debug($class);
-                debug($func);
                 $obj = new $class();
                 $obj->$func();
-
             }
         }
     }
