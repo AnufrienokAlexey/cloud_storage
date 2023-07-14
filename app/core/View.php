@@ -17,8 +17,12 @@ class View
     public function render($title, $vars = [])
     {
         $path = 'app/views/'.$this->route.'.php';
+        $header = 'app/views/header/header.php';
         if (file_exists($path)) {
             ob_start();
+            if (file_exists($header)) {
+                require $header;
+            }
             require $path;
             $content = ob_get_clean();
             require 'app/views/layouts/'.$this->layout.'.php';

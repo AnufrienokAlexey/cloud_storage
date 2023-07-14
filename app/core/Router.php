@@ -13,7 +13,9 @@ class Router
 
     public function run()
     {
-        $url = trim($_SERVER['REQUEST_URI'], '/');
+        $parseUrl = parse_url($_SERVER['REQUEST_URI']);
+
+        $url = trim($parseUrl['path'], '/');
 
         if (array_key_exists($url, $this->routes)) {
             foreach ($this->routes as $key => $route) {

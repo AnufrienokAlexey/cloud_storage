@@ -44,4 +44,9 @@ class Db
     {
         return $this->db->query($sql)->fetchAll(2);
     }
+
+    public function getById($sql)
+    {
+        return $this->db->query($sql)->fetchAll(2);
+    }
 }

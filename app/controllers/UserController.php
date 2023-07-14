@@ -3,17 +3,23 @@
 namespace App\controllers;
 
 use app\controllers;
+use App\core\View;
 
 class UserController extends Controller
 {
     public function list()
     {
-        $this->view->render('Страница обо мне', $this->model->getUsers());
+        $this->view->render('Страница обо мне', $this->model->usersList());
     }
 
     public function get()
     {
-        echo 'get()';
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $this->view->render('Страница обо мне', $this->model->usersGet($id));
+            return;
+        }
+        $this->view->render('Страница обо мне', $this->model->usersList());
     }
 
     public function update()

@@ -1,14 +1,7 @@
-</head>
-<body>
-
-<h3>Здесь будет страница обо мне</h3>
-<a href="/">Главная</a>
-<p>Привет, это дипломная работа Ануфриенок Алексея</p>
-<a href="/./app/views/public/includes/resume.pdf" target="_blank" title="Откроется в новом окне">Скачать мое резюме в pdf</a>
 <h4>Список всех пользователей</h4>
 <ol>
 <?php foreach ($vars as $item) {?>
-    <li><?=$item['email'] ?></li>
+    <li><?=$item['email']; ?></li>
 <?php }?>
 </ol>
 </body>

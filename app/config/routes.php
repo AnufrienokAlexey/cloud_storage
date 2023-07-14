@@ -19,4 +19,7 @@ return [
     'users/reset_password' => [
         'POST' => 'User::reset_password()',
     ],
+    'about_me' => [
+        'GET' => 'AboutMe::about_me()',
+    ],
 ];
