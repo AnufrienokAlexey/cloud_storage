@@ -8,9 +8,7 @@ class UserController extends Controller
 {
     public function list()
     {
-        debug($this->model->getUsers());
-        $this->model->getUsers();
-        $this->view->render('getUsers');
+        $this->view->render('Страница обо мне', $this->model->getUsers());
     }
 
     public function get()

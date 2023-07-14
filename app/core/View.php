@@ -11,13 +11,11 @@ class View
     public function __construct($route)
     {
         $this->route = $route;
-        debug($route);
         $this->path = $route;
     }
 
     public function render($title, $vars = [])
     {
-        extract($vars);
         $path = 'app/views/'.$this->route.'.php';
         if (file_exists($path)) {
             ob_start();

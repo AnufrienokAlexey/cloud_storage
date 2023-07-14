@@ -21,7 +21,6 @@ class Controller
     {
         $name = explode('/', $name);
         $path = 'app\models\\'.ucfirst($name[0]);
-        debug($path);
         if (class_exists($path)) {
             return new $path;
         }
