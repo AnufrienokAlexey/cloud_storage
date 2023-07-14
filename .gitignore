@@ -1,2 +1,4 @@
 /vendor/
 .idea
+.idea/cloud_storage.iml
+.idea/php.xml
