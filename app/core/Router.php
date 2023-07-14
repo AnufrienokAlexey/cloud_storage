@@ -11,7 +11,7 @@ class Router
         $this->routes = $routes;
     }
 
-    public function match()
+    public function run()
     {
         $url = trim($_SERVER['REQUEST_URI'], '/');
 
@@ -23,7 +23,7 @@ class Router
                             $arr = explode('::', $params);
                             $class = 'app\controllers\\' . ucfirst($arr[0]) . 'Controller';
                             $func = trim($arr[1], '()');
-                            $obj = new $class();
+                            $obj = new $class($url);
                             $obj->$func();
                         } else {
                             View::errorCode(405);
@@ -36,8 +36,4 @@ class Router
         }
     }
 
-    public function run()
-    {
-        $this->match();
-    }
 }

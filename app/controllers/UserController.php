@@ -2,11 +2,15 @@
 
 namespace App\controllers;
 
-class UserController
+use app\controllers;
+
+class UserController extends Controller
 {
     public function list()
     {
-        echo 'list()';
+        debug($this->model->getUsers());
+        $this->model->getUsers();
+        $this->view->render('getUsers');
     }
 
     public function get()
@@ -26,7 +30,8 @@ class UserController
 
     public function logout()
     {
-        echo 'logout()';
+        session_destroy();
+        $this->view->redirect('/');
     }
 
     public function reset_password()

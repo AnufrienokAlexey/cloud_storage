@@ -11,5 +11,7 @@
             "email": "alex.anufrienok@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }
