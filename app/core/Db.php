@@ -12,6 +12,7 @@ class Db
         $config = require 'app/config/db.php';
         $this->dbname = $config['dbname'];
         $this->db = new \PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'], $config['user'], $config['password']);
+//        $this->createTableUsers(); - функция создания новой таблицы users, если ее не существует. Сделал для первоначального запуска. Затем надо ее закомментировать (строку ниже), дабы не нагружать сервер лишним.
         $this->createTableUsers();
     }
 

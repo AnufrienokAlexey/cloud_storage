@@ -12,7 +12,7 @@
                 <li><a href="/about_me" class="nav-link px-2 text-white">Обо мне</a></li>
                 <li><a href="/users/list" class="nav-link px-2 text-white">Список пользователей</a></li>
                 <li><a href="/users/get" class="nav-link px-2 text-white">Получить пользователя по id</a></li>
-<!--                <li><a href="#" class="nav-link px-2 text-white">About</a></li>-->
+                <li><a href="/users/update" class="nav-link px-2 text-white">Обновить список пользователей</a></li>
             </ul>
 
 <!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">-->
