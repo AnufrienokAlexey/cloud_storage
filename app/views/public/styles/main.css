@@ -1,0 +1,28 @@
+:root {
+  --black: black;
+  --grey: grey;
+  --white: #fff;
+  --orange: #FFD600;
+  --dark-orange: #E1670E;
+  --light-grey: #CACACA;
+}
+
+body {
+  background-color: var(--white);
+  font-family: 'TTChocolatesBlack' , sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.list-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: none;
+}

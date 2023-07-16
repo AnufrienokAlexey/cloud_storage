@@ -3,6 +3,7 @@
 use App\core\Router;
 
 require 'app\lib\dev.php';
+require 'vendor\autoload.php';
 
 spl_autoload_register(function ($class)
 {

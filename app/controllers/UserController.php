@@ -2,8 +2,11 @@
 
 namespace App\controllers;
 
+
 use app\controllers;
 use App\core\View;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class UserController extends Controller
 {
@@ -52,7 +55,28 @@ class UserController extends Controller
 
     public function login()
     {
-        echo 'login()';
+        session_start();
+        $key = 'example_key';
+        $payload = [
+            'iss' => 'localhost',
+            'aud' => 'http://example.com',
+            'name' => 'alexey',
+            'password' => 'qwerty'
+        ];
+//        $encode = JWT::encode($payload, $key, 'HS256');
+//        echo $encode;
+        $header = apache_request_headers();
+        if (!empty($header['Authorization'])) {
+            try {
+                $header = $header['Authorization'];
+                $decode = JWT::decode($header, new Key($key, 'HS256'));
+                echo 'Ваше имя: '.$decode->name.'.'.PHP_EOL;
+                echo 'Ваш пароль: '.$decode->password.'.';
+            } catch (\Exception $e) {
+                echo 'Не верный токен';
+                View::errorCode(401);
+            }
+        }
     }
 
     public function logout()
