@@ -9,6 +9,7 @@ class Router
     {
         $routes = require 'app/config/routes.php';
         $this->routes = $routes;
+        $this->run();
     }
 
     public function run()

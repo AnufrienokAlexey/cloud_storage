@@ -22,7 +22,7 @@ class Controller
         $name = explode('/', $name);
         $path = 'app\models\\'.ucfirst($name[0]);
         if (class_exists($path)) {
-            return new $path;
+            return new $path();
         }
     }
 }
