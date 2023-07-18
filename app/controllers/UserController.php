@@ -9,42 +9,26 @@ use Firebase\JWT\Key;
 
 class UserController extends Controller
 {
-    public function list()
+    public function list(): void
     {
-//        Блок кода, если бы у нас frontend был бы свой
-        $this->view->render('Страница обо мне', $this->model->usersList());
-
-//        Блок кода для API.
-//        function map($array): array {
-//            $a = [];
-//            foreach ($array as $item) {
-//                $a[] = $item['email'];
-//            }
-//            return $a;
-//        }
-//        $arr = $this->model->usersList();
-//        print_r(map($arr));
+        $data = [];
+        foreach ($this->model->usersList() as $item) {
+            $data[] = $item['email'];
+        }
+        print_r(json_encode($data));
     }
 
-    public function get()
+    public function get(): void
     {
-//        Блок кода, если бы у нас frontend был бы свой
-        if (isset($_GET['id'])) {
-            $this->view->render('Страница обо мне', $this->model->usersGet($_GET['id']));
+        if (!empty($this->id)) {
+            if (!empty($this->model->usersGet($this->id))) {
+                print_r(json_encode($this->model->usersGet($this->id)));
+                return;
+            }
+            echo 'Пользователя с таким id = ' . $this->id . ' не существует.';
             return;
         }
-        $this->view->render('Страница обо мне', $this->model->usersList());
-
-//        Блок кода для API. На мой взгляд в REST API не принято использовать в ответе поясняющие фразы, а только чистые данные. Но я решил указать:
-//        if (!empty($_GET['id'])) {
-//            if (!empty($this->model->usersGet($_GET['id']))) {
-//                echo 'Найден пользователь с id = '.$_GET['id'].'. Его email = '.$this->model->usersGet($_GET['id'])[0]['email'].'.';
-//                return;
-//            }
-//            echo 'Пользователя с таким id = '.$_GET['id'].' не существует.';
-//            return;
-//        }
-//        echo 'Не хватает параметра id.';
+        echo 'Не хватает параметра id.';
     }
 
     public function update()

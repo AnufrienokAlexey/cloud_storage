@@ -1,5 +1,6 @@
 {
   "name": "alexey_anufrienok/cloud_storage",
+  "description": "PHP Skillbox graduate work",
   "autoload": {
     "psr-4": {
       "App\\": "app/"

@@ -2,27 +2,26 @@
 
 namespace App\controllers;
 
-use App\core\View;
-
 class Controller
 {
-    public $route;
-    public $view;
-    public $model;
+    public string $route;
+    public object $model;
+    public int $id;
 
-    public function __construct($route)
+    public function __construct($route, $id = null)
     {
         $this->route = $route;
-        $this->view = new View($route);
+        $this->id = $id;
         $this->model = $this->loadModel($route);
     }
 
-    public function loadModel($name)
+    public function loadModel($route): object|null
     {
-        $name = explode('/', $name);
-        $path = 'app\models\\' . ucfirst($name[0]);
+        $route = explode('/', $route);
+        $path = 'app\models\\' . ucfirst($route[0]);
         if (class_exists($path)) {
             return new $path();
         }
+        return null;
     }
 }

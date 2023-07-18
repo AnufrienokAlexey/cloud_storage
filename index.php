@@ -14,4 +14,8 @@ spl_autoload_register(function ($class) {
     }
 });
 
-new Router();
+try {
+    new Router();
+} catch (Throwable $e) {
+    echo $e;
+}

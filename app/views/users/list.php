@@ -3,7 +3,7 @@
     <?php
     foreach ($vars as $item) { ?>
         <li><?= $item['email']; ?></li>
-    <?php
+        <?php
     } ?>
 </ol>
 </body>

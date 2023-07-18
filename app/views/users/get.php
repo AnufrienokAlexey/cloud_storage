@@ -15,7 +15,7 @@
     <?php
     foreach ($vars as $item) { ?>
         <li><?= 'id = ' . $item['id'] . ', email = ' . $item['email']; ?></li>
-    <?php
+        <?php
     } ?>
 </ul>
 </body>

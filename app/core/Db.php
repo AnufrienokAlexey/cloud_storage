@@ -19,7 +19,8 @@ class Db
             $config['user'],
             $config['password']
         );
-//        $this->createTableUsers(); - функция создания новой таблицы users, если ее не существует. Сделал для первоначального запуска. Затем надо ее закомментировать (строку ниже), дабы не нагружать сервер лишним.
+//$this->createTableUsers(); - функция создания новой таблицы users, если ее не существует.
+//Сделал для первоначального запуска. Затем надо ее закомментировать (строку ниже), дабы не нагружать сервер лишним.
         $this->createTableUsers();
     }
 
@@ -44,18 +45,18 @@ class Db
         }
     }
 
-    public function add($sql)
-    {
-        $sth = $this->db->prepare($sql);
-        $sth->execute();
-    }
+//    public function add($sql): void
+//    {
+//        $sth = $this->db->prepare($sql);
+//        $sth->execute();
+//    }
 
-    public function get($sql)
+    public function get($sql): array
     {
         return $this->db->query($sql)->fetchAll(2);
     }
 
-    public function getById($sql)
+    public function getById($sql): array
     {
         return $this->db->query($sql)->fetchAll(2);
     }

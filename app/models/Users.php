@@ -6,7 +6,7 @@ use App\core\Model;
 
 class Users extends Model
 {
-    public function usersList()
+    public function usersList(): array
     {
         return $this->db->get('SELECT * FROM users');
     }

@@ -2,3 +2,4 @@
 .idea
 ./idea
 *.xml
+.idea/php.xml
