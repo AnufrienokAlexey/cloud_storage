@@ -1,6 +1,7 @@
 <?php
 
 namespace App\controllers;
+
 use App\controllers;
 use App\core\View;
 

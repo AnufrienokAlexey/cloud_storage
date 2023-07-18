@@ -5,6 +5,7 @@ namespace App\core;
 class Router
 {
     protected array $routes = [];
+
     public function __construct()
     {
         $routes = require 'app/config/routes.php';

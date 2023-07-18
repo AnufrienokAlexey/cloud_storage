@@ -12,9 +12,11 @@
     </div>
 </form>
 <ul>
-    <?php foreach ($vars as $item) {?>
-        <li><?='id = '.$item['id'].', email = '.$item['email']; ?></li>
-    <?php }?>
+    <?php
+    foreach ($vars as $item) { ?>
+        <li><?= 'id = ' . $item['id'] . ', email = ' . $item['email']; ?></li>
+    <?php
+    } ?>
 </ul>
 </body>
 </html>

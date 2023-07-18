@@ -16,7 +16,7 @@ class View
 
     public function render($title, $vars = [])
     {
-        $path = 'app/views/'.$this->route.'.php';
+        $path = 'app/views/' . $this->route . '.php';
         $header = 'app/views/header/header.php';
         if (file_exists($path)) {
             ob_start();
@@ -25,19 +25,20 @@ class View
             }
             require $path;
             $content = ob_get_clean();
-            require 'app/views/layouts/'.$this->layout.'.php';
+            require 'app/views/layouts/' . $this->layout . '.php';
         }
     }
 
     public function redirect($url)
     {
-        header('Location: '.$url);
+        header('Location: ' . $url);
         exit;
     }
 
-    public static function errorCode($code) {
+    public static function errorCode($code)
+    {
         http_response_code($code);
-        $path = 'app/views/errors/'.$code.'.php';
+        $path = 'app/views/errors/' . $code . '.php';
         if (file_exists($path)) {
             require $path;
         }

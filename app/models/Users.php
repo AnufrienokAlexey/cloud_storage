@@ -8,7 +8,7 @@ class Users extends Model
 {
     public function usersList()
     {
-        return $this->db->get("SELECT * FROM users");
+        return $this->db->get('SELECT * FROM users');
     }
 
     public function usersGet($id): array
