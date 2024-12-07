@@ -1,9 +1,10 @@
 <?php
 
-$timestamp = microtime(true);
-
 require __DIR__ . '\..\vendor\autoload.php';
 
-echo "Это index.php";
+$urlList = [
+    'main' => 'action',
+];
 
-dump(microtime(true)-$timestamp);
+return $urlList;
+
