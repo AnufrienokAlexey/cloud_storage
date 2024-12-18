@@ -4,7 +4,8 @@ namespace app\core;
 
 class Router
 {
-    public function processRequest()
+    public static function createNewDb(): void
     {
+        dump(CONFIG);
     }
 }
