@@ -29,22 +29,33 @@ class Connect extends Db
 
     public static function createNewDb(): void
     {
+        $host = CONFIG['host'];
+        $dbname = CONFIG['dbname'];
+        $username = CONFIG['username'];
+        $password = CONFIG['password'];
+
+        try {
+            $pdo = new PDO(
+                "mysql:host=$host",
+                "$username",
+                "$password"
+            );
+            $stm = $pdo->prepare("CREATE DATABASE $dbname COLLATE utf8_general_ci");
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    public static function connect(): void
+    {
         $databases = self::getAllDatabases();
         dump($databases);
 
         if (in_array('cloud_storage', $databases)) {
             dump('Already created db');
         } else {
-            dump('need create');
+            self::createNewDb('cloud_storage');
         }
-        /*
-        try {
-            $statement = new \PDO(
-                ''
-            );
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
-        }
-        */
     }
 }
