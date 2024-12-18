@@ -1,3 +1,6 @@
 <?php
 
-define("ROOT", dirname(__DIR__));
+return [
+    'host' => 'localhost',
+    ''
+];

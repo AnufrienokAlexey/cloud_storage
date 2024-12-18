@@ -1,8 +1,7 @@
 <?php
 
-require_once __DIR__ . '/config/config.php';
-require_once ROOT . '/../vendor/autoload.php';
-echo 'index.php';
+require_once __DIR__ . '/app/config/config.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $urlList = [
     '/users' => [
