@@ -10,6 +10,7 @@ class Router
 
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
+        dump($_GET['id']);
 
         if (array_key_exists($uri, ROUTES)) {
             $match = false;
