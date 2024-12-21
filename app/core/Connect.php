@@ -50,11 +50,8 @@ class Connect extends Db
     public static function connect(): void
     {
         $databases = self::getAllDatabases();
-        dump($databases);
 
-        if (in_array('cloud_storage', $databases)) {
-            dump('Already created db');
-        } else {
+        if (!in_array('cloud_storage', $databases)) {
             self::createNewDb('cloud_storage');
         }
     }
