@@ -12,18 +12,23 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
 
         if (array_key_exists($uri, ROUTES)) {
-            echo 'yes';
-            dump($uri);
-            dump($method);
-            dump(ROUTES);
+            $match = false;
+            foreach (ROUTES[$uri] as $key => $value) {
+                if (in_array($method, $value)) {
+                    $match = true;
+                }
+            }
+            if (!$match) {
+                self::ErrorPage(405);
+            }
         } else {
-            self::ErrorPage(402);
+            self::ErrorPage(404);
         }
     }
 
     public static function ErrorPage(int $status): void
     {
         http_response_code($status);
-        header("HTTP/1.1 $status Not Found");
+        header("HTTP/1.1 $status");
     }
 }
