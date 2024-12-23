@@ -10,12 +10,13 @@ class Router
 
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
-        dump($_GET['id']);
+        $uri = '/' . trim($uri, '/');
 
         if (array_key_exists($uri, ROUTES)) {
             $match = false;
-            foreach (ROUTES[$uri] as $key => $value) {
-                if (in_array($method, $value)) {
+            foreach (ROUTES[$uri] as $value) {
+                if ($value[0] == $method) {
+                    dump($value[0]);
                     $match = true;
                 }
             }
