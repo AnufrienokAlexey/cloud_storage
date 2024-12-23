@@ -2,43 +2,57 @@
 
 return [
     '/users' => [
-        ['GET', 'list'],
-        ['PUT', 'update'],
+        ['GET', ['User', 'list']],
+        ['PUT', ['User', 'update']],
     ],
-    '/users/id' => [
-        ['GET', 'get'],
+    '/users/get/{id}' => [
+        ['GET', ['User', 'get']],
     ],
-    '/admin/users' => [
-        ['GET', 'list'],
+    '/admin/users/list' => [
+        ['GET', ['Admin', 'list']],
     ],
-    '/admin/users/id' => [
-        ['GET', 'get'],
-        ['DELETE', 'delete'],
-        ['PUT', 'update'],
+    '/admin/users/get/{id}' => [
+        ['GET', ['Admin', 'get']],
     ],
-    '/files' => [
-        ['GET', 'list'],
-        ['POST', 'add'],
-        ['PUT', 'rename'],
+    '/admin/users/delete/{id}' => [
+        ['DELETE', ['Admin', 'delete']],
     ],
-    '/files/id' => [
-        ['GET', 'get'],
-        ['DELETE', 'remove'],
+    '/admin/users/update/{id}' => [
+        ['PUT', ['Admin', 'update']],
     ],
-    '/files/id/user_id' => [
-        ['PUT', 'share'],
-        ['DELETE', 'share'],
+    '/files/list' => [
+        ['GET', ['File', 'list']],
     ],
-    '/directories' => [
-        ['POST', 'add'],
-        ['PUT', 'rename'],
+    '/files/get/{id}' => [
+        ['GET', ['File', 'getId']],
     ],
-    '/directories/id' => [
-        ['GET', 'get'],
-        ['DELETE', 'delete'],
+    '/files/add' => [
+        ['POST', ['File', 'add']],
     ],
-    '/directories/id/user_id' => [
-        ['PUT', 'share'],
-        ['DELETE', 'share'],
+    '/files/rename' => [
+        ['PUT', ['File', 'rename']],
     ],
+    '/files/remove/{id}' => [
+        ['DELETE', ['File', 'removeId']],
+    ],
+    '/directories/add' => [
+        ['POST', ['File', 'add']],
+    ],
+    '/directories/rename' => [
+        ['PUT', ['File', 'rename']],
+    ],
+    '/directories/get/{id}' => [
+        ['GET', ['File', 'getId']],
+    ],
+    '/directories/delete/{id}' => [
+        ['DELETE', ['File', 'deleteId']],
+    ],
+    '/files/share/{id}' => [
+        ['GET', ['File', 'shareId']],
+    ],
+    '/files/share/{id}/{user_id}' => [
+        ['PUT', ['File', 'shareIdUserId']],
+        ['DELETE', ['File', 'deleteIdUserId']],
+    ],
+
 ];
