@@ -16,8 +16,13 @@ class Router
             $match = false;
             foreach (ROUTES[$uri] as $value) {
                 if ($value[0] == $method) {
-                    dump($value[0]);
                     $match = true;
+                    $controller = explode('/', $uri);
+                    $controller = ucfirst($controller[1]) . '.php';
+                    dump($controller);
+                    if (file_exists('/../controllers/' . $controller)) {
+                        dump('match');
+                    }
                 }
             }
             if (!$match) {
