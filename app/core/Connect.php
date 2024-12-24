@@ -6,11 +6,22 @@ use PDO;
 
 class Connect extends Db
 {
+    public static function db(): object
+    {
+        return new Db(
+            CONFIG['host'],
+            CONFIG['dbname'],
+            CONFIG['charset'],
+            CONFIG['username'],
+            CONFIG['password'],
+        );
+    }
+
     public static function getAllDatabases(): false|array
     {
-        $host = CONFIG['host'];
-        $username = CONFIG['username'];
-        $password = CONFIG['password'];
+        $host = self::db()->host;
+        $username = self::db()->username;
+        $password = self::db()->password;
 
         try {
             $pdo = new PDO(
@@ -28,10 +39,10 @@ class Connect extends Db
 
     public static function createNewDb(): void
     {
-        $host = CONFIG['host'];
-        $dbname = CONFIG['dbname'];
-        $username = CONFIG['username'];
-        $password = CONFIG['password'];
+        $host = self::db()->host;
+        $dbname = self::db()->dbname;
+        $username = self::db()->username;
+        $password = self::db()->password;
 
         try {
             $pdo = new PDO(
@@ -39,7 +50,9 @@ class Connect extends Db
                 "$username",
                 "$password"
             );
-            $stm = $pdo->prepare("CREATE DATABASE $dbname COLLATE utf8_general_ci");
+            $stm = $pdo->prepare(
+                "CREATE DATABASE $dbname COLLATE utf8_general_ci"
+            );
             $stm->execute();
         } catch (\PDOException $e) {
             error_log($e->getMessage());
