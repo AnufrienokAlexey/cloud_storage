@@ -22,9 +22,8 @@ class Connect extends Db
             return $pdo->query('SHOW DATABASES')->fetchAll(PDO::FETCH_COLUMN);
         } catch (\PDOException $e) {
             error_log($e->getMessage());
+            die('MySQL is not connected!');
         }
-
-        return false;
     }
 
     public static function createNewDb(): void

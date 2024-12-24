@@ -4,7 +4,8 @@ namespace app\core;
 
 class Db
 {
-    private string $host;
+
+    public string $host;
     private string $dbname;
     private string $charset;
     private string $username;
@@ -12,7 +13,7 @@ class Db
 
     public function __construct($host, $dbname, $charset, $username, $password)
     {
-        $this->host = $host;
+        //$this->host = $host;
         $this->dbname = $dbname;
         $this->charset = $charset;
         $this->username = $username;
