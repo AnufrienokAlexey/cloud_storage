@@ -29,7 +29,6 @@ class Connect extends Db
                 "$username",
                 "$password"
             );
-
             return $pdo->query('SHOW DATABASES')->fetchAll(PDO::FETCH_COLUMN);
         } catch (\PDOException $e) {
             error_log($e->getMessage());

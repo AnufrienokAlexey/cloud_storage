@@ -14,14 +14,22 @@ class Router
 
         if (array_key_exists($uri, ROUTES)) {
             $match = false;
-            foreach (ROUTES[$uri] as $value) {
-                if ($value[0] == $method) {
+            foreach (ROUTES[$uri] as $route) {
+                if ($route[0] == $method) {
                     $match = true;
-                    $controller = explode('/', $uri);
-                    $controller = ucfirst($controller[1]) . '.php';
-                    dump($controller);
-                    if (file_exists('/../controllers/' . $controller)) {
-                        dump('match');
+                    $controller = $route[1][0];
+                    $action = $route[1][1];
+                    $controllerFullName = "app\controllers\\" . $controller;
+                    $controllerPath = __DIR__ . '/../controllers/' . $controller . '.php';
+                    if (file_exists($controllerPath)) {
+                        $c = new $controllerFullName();
+                        if (method_exists($c, $action)) {
+                            $c->$action();
+                        } else {
+                            dump('Controller method not found!');
+                        }
+                    } else {
+                        dump('Controller class not found!');
                     }
                 }
             }

@@ -4,7 +4,6 @@ namespace app\core;
 
 class Db
 {
-
     protected string $host;
     protected string $dbname;
     protected string $charset;
@@ -28,25 +27,5 @@ class Db
     public function __set(string $name, $value): void
     {
         $this->$name = $value;
-    }
-
-    protected function getDbname(): string
-    {
-        return $this->dbname;
-    }
-
-    protected function getCharset(): string
-    {
-        return $this->charset;
-    }
-
-    protected function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    protected function getPassword(): string
-    {
-        return $this->password;
     }
 }

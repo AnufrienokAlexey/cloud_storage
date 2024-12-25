@@ -1,8 +1,10 @@
 <?php
 
+use app\core\Router;
+
 $microTime = microtime(true);
 
-use app\core\Router;
+spl_autoload_register();
 
 define("CONFIG", require_once(__DIR__ . '/app/config/config.php'));
 define("ROUTES", require_once(__DIR__ . '/app/config/routes.php'));
