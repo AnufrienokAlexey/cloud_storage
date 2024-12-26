@@ -6,6 +6,8 @@ use PDO;
 
 class Connect extends Db
 {
+    //protected static string $dbName = 'cloud_storage';
+
     public static function db(): object
     {
         return new Db(
@@ -36,10 +38,9 @@ class Connect extends Db
         }
     }
 
-    public static function createNewDb(): void
+    public static function createNewDb($dbname): void
     {
         $host = self::db()->host;
-        $dbname = self::db()->dbname;
         $username = self::db()->username;
         $password = self::db()->password;
 
@@ -62,8 +63,8 @@ class Connect extends Db
     {
         $databases = self::getAllDatabases();
 
-        if (!in_array('cloud_storage', $databases)) {
-            self::createNewDb('cloud_storage');
+        if (!in_array(self::db()->dbname, $databases)) {
+            self::createNewDb(self::db()->dbname);
         }
     }
 }
