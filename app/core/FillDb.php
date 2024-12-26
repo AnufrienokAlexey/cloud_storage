@@ -22,8 +22,12 @@ class FillDb
             $url = 'https://potterapi-fedeperin.vercel.app/en/characters';
             $response = self::getRequest($url);
             $result = json_decode($response, true);
-            foreach ($result as $character) {
-                dump($character['fullName']);
+            if (isset($result)) {
+                foreach ($result as $character) {
+                    dump($character['fullName']);
+                }
+            } else {
+                dump('Подключение к стороннему open Api не произошло!');
             }
             self::fillDb();
         } catch (\Exception $e) {
