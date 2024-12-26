@@ -59,12 +59,18 @@ class Connect extends Db
         }
     }
 
-    public static function connect(): void
+    public static function connect(): PDO
     {
         $databases = self::getAllDatabases();
 
         if (!in_array(self::db()->dbname, $databases)) {
             self::createNewDb(self::db()->dbname);
         }
+
+        $pdo = self::db();
+        $stm = $pdo->prepare("SELECT * FROM `cloud_storage`");
+        $res = $stm->execute;
+
+        return $res;
     }
 }

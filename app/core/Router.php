@@ -6,8 +6,6 @@ class Router
 {
     public static function start(): void
     {
-        Connect::connect();
-
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = '/' . trim($uri, '/');

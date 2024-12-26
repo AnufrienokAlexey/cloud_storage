@@ -1,6 +1,7 @@
 <?php
 
 use app\core\Router;
+use app\core\Connect;
 
 $microTime = microtime(true);
 
@@ -13,5 +14,6 @@ require_once __DIR__ . '/app/config/config.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 Router::start();
+Connect::connect();
 
 dump(microtime(true) - $microTime);

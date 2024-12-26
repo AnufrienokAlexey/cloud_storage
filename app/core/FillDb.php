@@ -37,7 +37,12 @@ class FillDb
 
     public static function fillDb(): void
     {
-        $db = Connect::db();
+        $db = Connect::connect();
         dump($db);
+        try {
+            $stm = $db->prepare("SELECT * FROM users");
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+        }
     }
 }
