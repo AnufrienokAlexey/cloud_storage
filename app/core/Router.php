@@ -6,13 +6,18 @@ class Router
 {
     public static function start(): void
     {
-        $uri = $_SERVER['REQUEST_URI'];
+        $uri = urldecode($_SERVER['REQUEST_URI']);
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = '/' . trim($uri, '/');
+        $uri = trim($uri);
+        $arr = explode('/', $uri);
+        $id = array_pop($arr);
+        $route = implode('/', $arr);
+        $id = (is_numeric($id) ? $id : null);
 
-        if (array_key_exists($uri, ROUTES)) {
+        if (array_key_exists($route, ROUTES)) {
             $match = false;
-            foreach (ROUTES[$uri] as $route) {
+            foreach (ROUTES[$route] as $route) {
                 if ($route[0] == $method) {
                     $match = true;
                     $controller = $route[1][0];
@@ -22,7 +27,7 @@ class Router
                     if (file_exists($controllerPath)) {
                         $c = new $controllerFullName();
                         if (method_exists($c, $action)) {
-                            $c->$action();
+                            ($id != null) ? $c->$action($id) : $c->$action();
                         } else {
                             dump('Controller method not found!');
                         }
