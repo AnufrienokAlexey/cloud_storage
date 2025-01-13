@@ -17,3 +17,5 @@ Router::start();
 //Connect::connect();
 
 dump(microtime(true) - $microTime);
+
+//Ok
