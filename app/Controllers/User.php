@@ -18,7 +18,7 @@ class User
         echo 'update()';
     }
 
-    public function get($id): void
+    public function get($id = null): void
     {
         dump($id);
     }

@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ALL);
+
 use app\core\Router;
 use app\core\Connect;
 
