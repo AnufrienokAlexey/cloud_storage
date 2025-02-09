@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "eb7bd5d2-03c7-46c1-9adc-652c2f30a14b",
+		"name": "Rest Api Diplom Work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28500085"
+	},
+	"item": [
+		{
+			"name": "/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/users",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost/users",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/get/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/users/get/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users",
+						"get",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/admin/users/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/admin/users/list",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"admin",
+						"users",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/admin/users/get/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/admin/users/get/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"admin",
+						"users",
+						"get",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/admin/users/delete/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost/admin/users/delete/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"admin",
+						"users",
+						"delete",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/admin/users/update/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost/admin/users/update/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"admin",
+						"users",
+						"update",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/list",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/get/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/get/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"get",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/add",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/rename",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/rename",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"rename"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/remove/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/remove/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"remove",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/directories/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost/directories/add",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"directories",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/directories/rename",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost/directories/rename",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"directories",
+						"rename"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/directories/get/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/directories/get/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"directories",
+						"get",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/directories/delete/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost/directories/delete/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"directories",
+						"delete",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/share/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/share/{id}",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"share",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/share/{id}/{user_id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/share/42/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"share",
+						"42",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/files/share/{id}/{user_id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost/files/share/42/42",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"files",
+						"share",
+						"42",
+						"42"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
