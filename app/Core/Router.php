@@ -6,7 +6,6 @@ class Router
 {
     public function processRequest()
     {
-
     }
 
     public static function start(): void
@@ -48,7 +47,7 @@ class Router
         }
     }
 
-public static function ErrorPage(int $status): void
+    public static function ErrorPage(int $status): void
     {
         http_response_code($status);
         header("HTTP/1.1 $status");

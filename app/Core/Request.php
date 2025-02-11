@@ -11,7 +11,6 @@ class Request
 
     public function getRoute()
     {
-
     }
 
     public function getMethod()
