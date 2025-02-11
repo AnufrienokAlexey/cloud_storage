@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /index.php [L,QSA]
+php_value upload_max_filesize 2П
