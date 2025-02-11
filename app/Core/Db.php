@@ -1,6 +1,8 @@
 <?php
 
-namespace app\core;
+namespace app\Core;
+
+use PDO;
 
 class Db
 {
@@ -27,5 +29,36 @@ class Db
     public function __set(string $name, $value): void
     {
         $this->$name = $value;
+    }
+
+    public function getConnection(): false|\PDO
+    {
+        try {
+            return new \PDO($this->host, $this->username, $this->password);
+        }
+        catch (\PDOException $e) {
+
+        }
+        return false;
+    }
+
+    public function findBy()
+    {
+
+    }
+
+    public function findOneBy()
+    {
+
+    }
+
+    public function findAll()
+    {
+
+    }
+
+    public function find()
+    {
+
     }
 }

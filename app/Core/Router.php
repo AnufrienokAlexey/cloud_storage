@@ -1,9 +1,14 @@
 <?php
 
-namespace app\core;
+namespace app\Core;
 
 class Router
 {
+    public function processRequest()
+    {
+
+    }
+
     public static function start(): void
     {
         $uri = urldecode($_SERVER['REQUEST_URI']);

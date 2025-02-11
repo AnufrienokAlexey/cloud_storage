@@ -2,7 +2,7 @@
 
 namespace app\Controllers;
 
-use app\core\FillDb;
+use app\Core\FillDb;
 
 class User
 {

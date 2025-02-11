@@ -2,8 +2,8 @@
 
 error_reporting(E_ALL);
 
-use app\core\Router;
-use app\core\Connect;
+use app\Core\Router;
+use app\Core\Connect;
 
 $microTime = microtime(true);
 
