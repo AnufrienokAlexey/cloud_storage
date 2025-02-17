@@ -8,7 +8,7 @@ class User
 {
     public function list(): void
     {
-        echo 'list()';
+        echo 'userlist()';
 //        FillDb::connectToOpenApi();
 //        echo('endlist()');
     }
