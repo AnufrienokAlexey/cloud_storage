@@ -9,9 +9,9 @@ class File
         echo 'filesList()';
     }
 
-    public function get($id = null): void
+    public function getId($id = null): void
     {
-        echo "filesGet($id)";
+        echo "filesGetId($id)";
     }
 
     public function add(): void
@@ -24,9 +24,9 @@ class File
         echo "filesRename()";
     }
 
-    public function remove($id = null): void
+    public function removeId($id = null): void
     {
-        echo "filesRemove($id)";
+        echo "filesRemoveId($id)";
     }
 
     public function shareId($id = null): void

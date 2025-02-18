@@ -41,7 +41,7 @@ class Router
                         if (method_exists($c, $action)) {
                             ($id != null) ? $c->$action($id) : $c->$action();
                         } else {
-                            dump('Controller method not found!');
+                            dump('Controller action not found!');
                         }
                     } else {
                         dump('Controller class not found!');

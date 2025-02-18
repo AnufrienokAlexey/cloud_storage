@@ -2,7 +2,7 @@
 
 namespace app\Controllers;
 
-class Directories
+class Directory
 {
     public function add(): void
     {
@@ -14,13 +14,13 @@ class Directories
         echo "directoriesRename()";
     }
 
-    public function get($id = null): void
+    public function getId($id = null): void
     {
-        echo "directoriesGet($id)";
+        echo "directoriesGetId($id)";
     }
 
-    public function delete($id = null): void
+    public function deleteId($id = null): void
     {
-        echo "directoriesDelete($id)";
+        echo "directoriesDeleteId($id)";
     }
 }

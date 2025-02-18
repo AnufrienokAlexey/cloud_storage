@@ -8,9 +8,7 @@ class User
 {
     public function list(): void
     {
-        echo PHP_EOL . 'userlist()';
-//        FillDb::connectToOpenApi();
-//        echo('endlist()');
+        echo 'userlist()';
     }
 
     public function update(): void
@@ -20,7 +18,7 @@ class User
 
     public function get(): void
     {
-        echo PHP_EOL . 'userGet()';
+        echo 'userGet()';
     }
 
     public function login()
