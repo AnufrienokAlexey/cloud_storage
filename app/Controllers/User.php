@@ -18,9 +18,9 @@ class User
         echo 'update()';
     }
 
-    public function get($id = null): void
+    public function get(): void
     {
-        dump($id);
+        echo PHP_EOL . 'userGet()';
     }
 
     public function login()

@@ -4,36 +4,36 @@ namespace app\Core;
 
 class Request
 {
-    private array $storage;
-
-    public function __construct()
+    public static function getData(): array
     {
-        $this->storage = $this->cleanInput($_REQUEST);
+        return self::cleanInput($_REQUEST);
     }
 
-    public function __get($name)
+    public static function getUri(): string
     {
-        if (isset($this->storage[$name])) {
-            return $this->storage[$name];
-        }
+        $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+        $uri = '/' . trim($uri, '/');
+        return trim($uri);
     }
 
-    public function getData(): array
+    public static function getRoute(): array
     {
-        return $this->storage;
+        return explode('/', self::getUri());
     }
 
-    public function getRoute(): string
+    public static function getId(): ?string
     {
-        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = self::getRoute();
+        $id = array_pop($uri);
+        return is_numeric($id) ? $id : null;
     }
 
-    public function getMethod(): string
+    public static function getMethod(): string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    private function cleanInput($data): array
+    private static function cleanInput($data): array
     {
         $cleanedData = [];
         if (is_array($data)) {

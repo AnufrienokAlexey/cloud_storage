@@ -10,20 +10,29 @@ class Router
 
     public static function start(): void
     {
-        $uri = urldecode($_SERVER['REQUEST_URI']);
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = '/' . trim($uri, '/');
-        $uri = trim($uri);
-        $arrUri = explode('/', $uri);
-        $route = (!empty($arrUri[2])) ? "/$arrUri[1]/$arrUri[2]" : "/$arrUri[1]";
-        $id = is_numeric($arrUri[3]) ? $arrUri[3] : null;
+        $id = Request::getId();
+        dump($id);
+        $uri = Request::getUri();
+        dump($uri);
+        $route = Request::getRoute();
+        dump($route);
+        $method = Request::getMethod();
+        dump($method);
 
-        if (array_key_exists($route, ROUTES)) {
+        if ($id != null) {
+            $uriArr = explode('/', $uri);
+            array_pop($uriArr);
+            $uriStr = implode('/', $uriArr);
+            $uri = "$uriStr/{id}";
+        }
+
+        if (array_key_exists($uri, ROUTES)) {
             $matchMethod = false;
-            foreach (ROUTES[$route] as $route) {
+            foreach (ROUTES[$uri] as $route) {
                 if ($route[0] == $method) {
                     $matchMethod = true;
                     $controller = $route[1][0];
+                    dump($controller);
                     $action = $route[1][1];
                     $controllerFullName = "app\\Controllers\\" . $controller;
                     $controllerPath = APP . '/Controllers/' . $controller . '.php';
