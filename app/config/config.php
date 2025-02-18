@@ -3,7 +3,7 @@
 return [
     'host' => 'localhost',
     'dbname' => 'cloud_storage',
-    'charset' => 'utf8',
-    'username' => 'root',
-    'password' => '',
+    'charset' => 'utf8mb4',
+    'username' => 'user',
+    'password' => 'user',
 ];

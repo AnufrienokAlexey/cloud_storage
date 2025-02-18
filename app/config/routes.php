@@ -36,16 +36,16 @@ return [
         ['DELETE', ['File', 'removeId']],
     ],
     '/directories/add' => [
-        ['POST', ['File', 'add']],
+        ['POST', ['Directory', 'add']],
     ],
     '/directories/rename' => [
-        ['PUT', ['File', 'rename']],
+        ['PUT', ['Directory', 'rename']],
     ],
     '/directories/get/{id}' => [
-        ['GET', ['File', 'getId']],
+        ['GET', ['Directory', 'getId']],
     ],
     '/directories/delete/{id}' => [
-        ['DELETE', ['File', 'deleteId']],
+        ['DELETE', ['Directory', 'deleteId']],
     ],
     '/files/share/{id}' => [
         ['GET', ['File', 'shareId']],

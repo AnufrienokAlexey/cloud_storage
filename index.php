@@ -2,8 +2,10 @@
 
 error_reporting(E_ALL);
 
+use app\Core\Request;
+use app\Core\Response;
 use app\Core\Router;
-use app\Core\Connect;
+use app\Core\Db;
 
 $microTime = microtime(true);
 
@@ -16,7 +18,10 @@ const APP = __DIR__ . '/app';
 require_once __DIR__ . '/app/config/config.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
+
+$response = new Response();
+
 Router::start();
-//Connect::connect();
+//dump(Db::getInstance());
 
 dump(microtime(true) - $microTime);

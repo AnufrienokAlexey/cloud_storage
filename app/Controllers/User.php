@@ -8,9 +8,7 @@ class User
 {
     public function list(): void
     {
-        echo 'list()';
-//        FillDb::connectToOpenApi();
-//        echo('endlist()');
+        echo 'userlist()';
     }
 
     public function update(): void
@@ -18,9 +16,9 @@ class User
         echo 'update()';
     }
 
-    public function get($id = null): void
+    public function get(): void
     {
-        dump($id);
+        echo 'userGet()';
     }
 
     public function login()
