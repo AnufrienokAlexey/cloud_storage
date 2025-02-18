@@ -6,7 +6,7 @@ class Admin
 {
     public function list(): void
     {
-        echo 'adminlist()';
+        echo 'adminList()';
     }
 
     public function get($id = null): void
