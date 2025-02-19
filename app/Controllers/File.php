@@ -36,7 +36,7 @@ class File
 
     public function shareIdUserId($id = null, $user_id = null): void
     {
-        echo "filesShareId($id, $user_id)";
+        echo "filesShareIdUserId($id, $user_id)";
     }
 
     public function deleteIdUserId($id = null, $user_id = null): void

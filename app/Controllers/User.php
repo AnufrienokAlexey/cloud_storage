@@ -8,7 +8,7 @@ class User
 {
     public function list(): void
     {
-        echo 'userlist()';
+        echo 'userList()';
     }
 
     public function update(): void

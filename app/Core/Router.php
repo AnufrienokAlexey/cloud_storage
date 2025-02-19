@@ -4,27 +4,13 @@ namespace app\Core;
 
 class Router
 {
-    public function processRequest()
+    public static function processRequest(): void
     {
-    }
-
-    public static function start(): void
-    {
-        $id = Request::getId();
-        dump($id);
-        $uri = Request::getUri();
-        dump($uri);
-        $route = Request::getRoute();
-        dump($route);
-        $method = Request::getMethod();
-        dump($method);
-
-        if ($id != null) {
-            $uriArr = explode('/', $uri);
-            array_pop($uriArr);
-            $uriStr = implode('/', $uriArr);
-            $uri = "$uriStr/{id}";
-        }
+        $request = new Request();
+        $id = $request->id;
+        $userId = $request->userId;
+        $uri = $request->configRoute;
+        $method = $request->getMethod();
 
         if (array_key_exists($uri, ROUTES)) {
             $matchMethod = false;
@@ -32,14 +18,21 @@ class Router
                 if ($route[0] == $method) {
                     $matchMethod = true;
                     $controller = $route[1][0];
-                    dump($controller);
                     $action = $route[1][1];
                     $controllerFullName = "app\\Controllers\\" . $controller;
                     $controllerPath = APP . '/Controllers/' . $controller . '.php';
                     if (file_exists($controllerPath)) {
                         $c = new $controllerFullName();
                         if (method_exists($c, $action)) {
-                            ($id != null) ? $c->$action($id) : $c->$action();
+                            if ($id != null) {
+                                if ($userId != null) {
+                                    $c->$action($id, $userId);
+                                } else {
+                                    $c->$action($id);
+                                }
+                            } else {
+                                $c->$action();
+                            }
                         } else {
                             dump('Controller action not found!');
                         }
