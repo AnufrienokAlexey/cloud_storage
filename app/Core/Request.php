@@ -4,45 +4,49 @@ namespace app\Core;
 
 class Request
 {
-    public static function getData(): array
+    public ?int $id = null;
+    public ?int $userId = null;
+    public ?string $configRoute = null;
+
+    public function __construct()
     {
-        return self::cleanInput($_REQUEST);
+        $this->getConfigRoute();
     }
 
-    public static function getUri(): string
+    public function getUri(): string
     {
         $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $uri = '/' . trim($uri, '/');
         return trim($uri);
     }
 
-    public static function getRoute(): array
+    public function getRoute(): array
     {
-        return explode('/', self::getUri());
+        return explode('/', $this->getUri());
     }
 
-    public static function getId(): ?string
+    public function getConfigRoute(): void
     {
-        $uri = self::getRoute();
-        $id = array_pop($uri);
-        return is_numeric($id) ? $id : null;
-    }
+        $uriArray = $this->getRoute();
+        $this->configRoute = implode('/', $uriArray);
+        $lastElement = array_pop($uriArray);
 
-    public static function getMethod(): string
-    {
-        return $_SERVER['REQUEST_METHOD'];
-    }
-
-    private static function cleanInput($data): array
-    {
-        $cleanedData = [];
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
-                $cleanedData[$key] = trim($value);
-                $cleanedData[$key] = stripslashes($cleanedData[$key]);
-                $cleanedData[$key] = htmlspecialchars($cleanedData[$key], ENT_QUOTES);
+        if (is_numeric($lastElement)) {
+            $this->id = $lastElement;
+            $uriStr = implode('/', $uriArray);
+            $this->configRoute = "$uriStr/{id}";
+            $lastElement2 = array_pop($uriArray);
+            if (is_numeric($lastElement2)) {
+                $this->id = $lastElement2;
+                $this->userId = $lastElement;
+                $uriStr = implode('/', $uriArray);
+                $this->configRoute = "$uriStr/{id}/{user_id}";
             }
         }
-        return $cleanedData;
+    }
+
+    public function getMethod(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
     }
 }

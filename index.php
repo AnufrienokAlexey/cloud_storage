@@ -21,7 +21,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $response = new Response();
 
-Router::start();
+Router::processRequest();
 //dump(Db::getInstance());
 
 dump(microtime(true) - $microTime);
