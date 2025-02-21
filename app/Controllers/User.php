@@ -3,12 +3,14 @@
 namespace app\Controllers;
 
 use app\Core\FillDb;
+use app\Core\Response;
 
 class User
 {
     public function list(): void
     {
-        echo 'userList()';
+        $response = new Response('Hello World', 202);
+        dump($response->send());
     }
 
     public function update(): void
