@@ -4,13 +4,14 @@ namespace app\Controllers;
 
 use app\Core\FillDb;
 use app\Core\Response;
+use JetBrains\PhpStorm\NoReturn;
 
 class User
 {
-    public function list(): void
+    #[NoReturn] public function list(): void
     {
-        $response = new Response('Hello World', 202);
-        dump($response->send());
+        $response = new Response('UserList', 202);
+        $response->send();
     }
 
     public function update(): void

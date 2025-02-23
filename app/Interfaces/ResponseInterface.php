@@ -6,5 +6,5 @@ use app\Core\Response;
 
 interface ResponseInterface
 {
-    public function send(): string;
+    public function send(): void;
 }

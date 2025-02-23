@@ -3,6 +3,7 @@
 namespace app\Core;
 
 use app\Interfaces\ResponseInterface;
+use JetBrains\PhpStorm\NoReturn;
 
 class Response implements ResponseInterface
 {
@@ -27,15 +28,16 @@ class Response implements ResponseInterface
         return $this->data;
     }
 
-    public function send(): string
+    #[NoReturn] public function send(): void
     {
+        header_remove();
         http_response_code($this->getStatusCode());
-        return json_encode(
-            [
-                'status_code' => $this->getStatusCode(),
-                'data' => $this->getData()
-            ]
-        );
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status_code' => $this->getStatusCode(),
+            'data' => $this->getData()
+        ]);
+        exit();
     }
 
     private function setData(string $data): void
