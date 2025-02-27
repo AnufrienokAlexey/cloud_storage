@@ -54,5 +54,4 @@ return [
         ['PUT', ['File', 'shareIdUserId']],
         ['DELETE', ['File', 'deleteIdUserId']],
     ],
-
 ];

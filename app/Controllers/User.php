@@ -10,18 +10,17 @@ class User
 {
     #[NoReturn] public function list(): void
     {
-        $response = new Response('UserList', 202);
-        $response->send();
+        Response::send('list');
     }
 
-    public function update(): void
+    #[NoReturn] public function update(): void
     {
-        echo 'update()';
+        Response::send('update');
     }
 
-    public function get(): void
+    #[NoReturn] public function get(): void
     {
-        echo 'userGet()';
+        Response::send('userGet');
     }
 
     public function login()
