@@ -2,7 +2,8 @@
 
 namespace app\Controllers;
 
-use app\Core\FillDb;
+use app\Core\Db;
+use app\Core\Registry;
 use app\Core\Response;
 use JetBrains\PhpStorm\NoReturn;
 

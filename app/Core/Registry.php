@@ -11,6 +11,9 @@ class Registry
 
     public function __construct()
     {
+        foreach (CONFIG as $name => $routes) {
+            self::set($name, $routes);
+        }
     }
 
     public static function getInstance(): ?Registry
@@ -23,7 +26,7 @@ class Registry
 
     final public function set(string $key, $value): void
     {
-        if (!in_array($key, self::$registry)) {
+        if (in_array($key, self::$registry)) {
             throw new InvalidArgumentException("Указан неверный ключ - $key.");
         }
         self::$registry[$key] = $value;
@@ -31,7 +34,7 @@ class Registry
 
     final public function get(string $key)
     {
-        if (!in_array($key, self::$registry)) {
+        if (in_array($key, self::$registry)) {
             throw new InvalidArgumentException("Указан неверный ключ - $key.");
         }
         return self::$registry[$key] ?? null;
