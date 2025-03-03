@@ -19,8 +19,7 @@ const APP = __DIR__ . '/app';
 require_once __DIR__ . '/app/config/config.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-$db = Registry::getInstance()->get('mysql');
-define("DB", $db);
+define("DB", Registry::getInstance()->get('mysql'));
 Router::processRequest();
 
 dump(microtime(true) - $microTime);
