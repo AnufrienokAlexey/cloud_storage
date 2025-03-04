@@ -2,7 +2,7 @@
 
 namespace app\Controllers;
 
-use app\Core\Db;
+use app\Core\Connect;
 use app\Core\Registry;
 use app\Core\Response;
 use JetBrains\PhpStorm\NoReturn;
@@ -11,12 +11,14 @@ class User
 {
     #[NoReturn] public function list(): void
     {
-        Response::send('list');
+        //Response::send('userList');
+        echo('UserLixsxst');
+        Connect::connect(DB['dbname']);
     }
 
     #[NoReturn] public function update(): void
     {
-        Response::send('update');
+        Response::send('userUpdate');
     }
 
     #[NoReturn] public function get(): void

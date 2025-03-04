@@ -10,9 +10,10 @@ class Db
     protected static ?Db $_instance = null;
     private PDO $pdo;
 
-    private function __construct($host, $dbname, $charset, $username, $password)
+    private function __construct($host, $username, $password)
     {
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+//        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+        $dsn = "mysql:host=$host";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -30,8 +31,8 @@ class Db
         if (is_null(self::$_instance)) {
             self::$_instance = new self(
                 DB['host'],
-                DB['dbname'],
-                DB['charset'],
+                //DB['dbname'],
+//                DB['charset'],
                 DB['username'],
                 DB['password'],
             );
