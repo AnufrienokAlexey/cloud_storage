@@ -25,13 +25,14 @@ class Connect extends Db
         }
     }
 
-    private static function createTable($table): void
+    private static function createTable($dbname, $table): void
     {
         try {
+            Db::getInstance()->query("USE $dbname");
             $stm = Db::getInstance()->prepare(
-                'CREATE TABLE IF NOT EXISTS users (
+                "CREATE TABLE IF NOT EXISTS $table (
                         id INTEGER AUTO_INCREMENT PRIMARY KEY,
-                        username VARCHAR(255))'
+                        username VARCHAR(255))"
             );
             $stm->execute();
         } catch (\PDOException $e) {
@@ -39,15 +40,19 @@ class Connect extends Db
         }
     }
 
-    private static function addUsers($table): void
+    private static function addUsers($dbname, $table): void
     {
+        dump(FillDb::connectToOpenApi());
         try {
-            $stm = Db::getInstance()->prepare(
-                "INSERT INTO cloud_storage.users
+            foreach (FillDb::connectToOpenApi() as $val) {
+                $stm = Db::getInstance()->prepare(
+                    "INSERT INTO $dbname.$table
                         (id, username)
-                        VALUES(null, 'padded')"
-            );
-            $stm->execute();
+                        VALUES(null, :value)"
+                );
+                $stm->bindParam(':value', $val, PDO::PARAM_STR);
+                $stm->execute();
+            }
         } catch (\PDOException $e) {
             error_log($e->getMessage());
         }
@@ -61,9 +66,8 @@ class Connect extends Db
             self::createNewDb($dbname);
         }
 
-        Db::getInstance()->query("USE $dbname");
-        self::createTable($table);
-        self::addUsers($table);
+        self::createTable($dbname, $table);
+        self::addUsers($dbname, $table);
     }
 
 

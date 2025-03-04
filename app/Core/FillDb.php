@@ -4,7 +4,7 @@ namespace app\Core;
 
 class FillDb
 {
-    public static function getRequest($url): bool|string
+    private static function getResponse($url): bool|string
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -14,34 +14,25 @@ class FillDb
         return $response;
     }
 
-    public static function connectToOpenApi(): void
+    public static function connectToOpenApi(): array|false
     {
         try {
+            $arr = [];
             $url = 'https://potterapi-fedeperin.vercel.app/en/characters';
-            $response = self::getRequest($url);
+            $response = self::getResponse($url);
             $result = json_decode($response, true);
+            dump($result);
             if (isset($result)) {
                 foreach ($result as $character) {
-                    dump($character['fullName']);
+                    $arr[] = $character['fullName'];
                 }
+                return $arr;
             } else {
-                dump('Подключение к стороннему open Api не произошло!');
+                die('Подключение к стороннему open Api не произошло!');
             }
-            self::fillDb();
         } catch (\Exception $e) {
             dump($e->getMessage());
         }
-    }
-
-    public static function fillDb(): void
-    {
-//        $db = Connect::connect();
-//        dump($db);
-//        try {
-//            $stm = $db->prepare("SELECT * FROM users");
-//        } catch (\Exception $e) {
-//            dump($e->getMessage());
-//        }
-        echo "fillDb()";
+        return false;
     }
 }
