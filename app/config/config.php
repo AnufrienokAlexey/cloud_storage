@@ -7,5 +7,6 @@ return [
         'charset' => 'utf8mb4',
         'username' => 'user',
         'password' => 'user',
-    ]
+    ],
+    'user_table' => 'users',
 ];

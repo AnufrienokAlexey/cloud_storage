@@ -12,7 +12,6 @@ class Db
 
     private function __construct($host, $username, $password)
     {
-//        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
         $dsn = "mysql:host=$host";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -37,6 +36,7 @@ class Db
                 DB['password'],
             );
         }
+
         return self::$_instance->pdo;
     }
 

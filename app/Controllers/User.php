@@ -5,6 +5,7 @@ namespace app\Controllers;
 use app\Core\Connect;
 use app\Core\Registry;
 use app\Core\Response;
+use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;
 
 class User
@@ -13,7 +14,8 @@ class User
     {
         //Response::send('userList');
         echo('UserLixsxst');
-        Connect::connect(DB['dbname']);
+        Connect::connect(DB['dbname'], 'users');
+        dump(UserService::list());
     }
 
     #[NoReturn] public function update(): void

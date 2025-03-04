@@ -25,7 +25,35 @@ class Connect extends Db
         }
     }
 
-    public static function connect($dbname): void
+    private static function createTable($table): void
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER AUTO_INCREMENT PRIMARY KEY,
+                        username VARCHAR(255))'
+            );
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    private static function addUsers($table): void
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                "INSERT INTO cloud_storage.users
+                        (id, username)
+                        VALUES(null, 'padded')"
+            );
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    public static function connect($dbname, $table): void
     {
         $databases = self::getAllDatabases();
 
@@ -34,12 +62,9 @@ class Connect extends Db
         }
 
         Db::getInstance()->query("USE $dbname");
-        $stm = DB::getInstance()->prepare(
-            'CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY,
-            username VARCHAR(255))'
-        );
-        $stm->execute();
+        self::createTable($table);
+        self::addUsers($table);
     }
+
 
 }
