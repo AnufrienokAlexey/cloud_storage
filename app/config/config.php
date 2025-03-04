@@ -1,9 +1,12 @@
 <?php
 
 return [
-    'host' => 'localhost',
-    'dbname' => 'cloud_storage',
-    'charset' => 'utf8mb4',
-    'username' => 'user',
-    'password' => 'user',
+    'mysql' => [
+        'host' => 'localhost',
+        'dbname' => 'cloud_storage',
+        'charset' => 'utf8mb4',
+        'username' => 'user',
+        'password' => 'user',
+    ],
+    'user_table' => 'users',
 ];

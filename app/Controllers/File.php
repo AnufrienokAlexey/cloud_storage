@@ -2,46 +2,49 @@
 
 namespace app\Controllers;
 
+use app\Core\Response;
+use JetBrains\PhpStorm\NoReturn;
+
 class File
 {
-    public function list(): void
+    #[NoReturn] public function list(): void
     {
-        echo 'filesList()';
+        Response::send('filesList');
     }
 
-    public function getId($id = null): void
+    #[NoReturn] public function getId($id = null): void
     {
-        echo "filesGetId($id)";
+        Response::send('filesGetId', $id);
     }
 
-    public function add(): void
+    #[NoReturn] public function add(): void
     {
-        echo "filesAdd()";
+        Response::send('filesAdd');
     }
 
-    public function rename(): void
+    #[NoReturn] public function rename(): void
     {
-        echo "filesRename()";
+        Response::send('filesRename');
     }
 
-    public function removeId($id = null): void
+    #[NoReturn] public function removeId($id = null): void
     {
-        echo "filesRemoveId($id)";
+        Response::send('filesRemoveId', $id);
     }
 
-    public function shareId($id = null): void
+    #[NoReturn] public function shareId($id = null): void
     {
-        echo "filesShareId($id)";
+        Response::send('filesShareId', $id);
     }
 
-    public function shareIdUserId($id = null, $user_id = null): void
+    #[NoReturn] public function shareIdUserId($id = null, $userId = null): void
     {
-        echo "filesShareIdUserId($id, $user_id)";
+        Response::send('filesShareIdUserId', $id, $userId);
     }
 
-    public function deleteIdUserId($id = null, $user_id = null): void
+    #[NoReturn] public function deleteIdUserId($id = null, $userId = null): void
     {
-        echo "filesDeleteIdUserId($id, $user_id)";
+        Response::send('filesDeleteIdUserId', $id, $userId);
     }
 
 }

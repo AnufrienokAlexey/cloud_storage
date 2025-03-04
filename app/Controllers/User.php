@@ -2,25 +2,30 @@
 
 namespace app\Controllers;
 
-use app\Core\FillDb;
+use app\Core\Connect;
+use app\Core\Registry;
 use app\Core\Response;
+use app\Services\UserService;
+use JetBrains\PhpStorm\NoReturn;
 
 class User
 {
-    public function list(): void
+    #[NoReturn] public function list(): void
     {
-        $response = new Response('Hello World', 202);
-        dump($response->send());
+        //Response::send('userList');
+        echo('UserLixsxst');
+        Connect::connect(DB['dbname'], 'users');
+        dump(UserService::list());
     }
 
-    public function update(): void
+    #[NoReturn] public function update(): void
     {
-        echo 'update()';
+        Response::send('userUpdate');
     }
 
-    public function get(): void
+    #[NoReturn] public function get(): void
     {
-        echo 'userGet()';
+        Response::send('userGet');
     }
 
     public function login()

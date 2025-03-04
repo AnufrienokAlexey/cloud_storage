@@ -2,25 +2,28 @@
 
 namespace app\Controllers;
 
+use app\Core\Response;
+use JetBrains\PhpStorm\NoReturn;
+
 class Directory
 {
-    public function add(): void
+    #[NoReturn] public function add(): void
     {
-        echo "directoriesAdd()";
+        Response::send('directoriesAdd');
     }
 
-    public function rename(): void
+    #[NoReturn] public function rename(): void
     {
-        echo "directoriesRename()";
+        Response::send('directoriesRename');
     }
 
-    public function getId($id = null): void
+    #[NoReturn] public function getId($id = null): void
     {
-        echo "directoriesGetId($id)";
+        Response::send('directoriesGetId', $id);
     }
 
-    public function deleteId($id = null): void
+    #[NoReturn] public function deleteId($id = null): void
     {
-        echo "directoriesDeleteId($id)";
+        Response::send('directoriesDeleteId', $id);
     }
 }

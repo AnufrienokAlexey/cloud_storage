@@ -2,25 +2,28 @@
 
 namespace app\Controllers;
 
+use app\Core\Response;
+use JetBrains\PhpStorm\NoReturn;
+
 class Admin
 {
-    public function list(): void
+    #[NoReturn] public function list(): void
     {
-        echo 'adminList()';
+        Response::send('adminList');
     }
 
-    public function get($id = null): void
+    #[NoReturn] public function get($id = null): void
     {
-        echo "adminGet($id)";
+        Response::send('adminGet');
     }
 
-    public function delete($id = null): void
+    #[NoReturn] public function delete($id = null): void
     {
-        echo "adminDelete($id)";
+        Response::send('adminDelete', $id);
     }
 
-    public function update($id = null): void
+    #[NoReturn] public function update($id = null): void
     {
-        echo "adminUpdate($id)";
+        Response::send('adminUpdate', $id);
     }
 }

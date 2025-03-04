@@ -4,8 +4,6 @@ namespace app\Core;
 
 class FillDb
 {
-
-
     public static function getRequest($url): bool|string
     {
         $ch = curl_init();
