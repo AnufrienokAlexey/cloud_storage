@@ -5,12 +5,12 @@ namespace app\Core;
 class FillDb
 {
     private static string $usernameUrl = 'https://potterapi-fedeperin.vercel.app/en/characters';
-    private static string $randomDataUrl = 'https://random-data-api.com/api/v3/projects/31b583f2-351d-465f-b375-de15cbd07720';
+    private static string $randomDataUrl = 'https://random-data-api.com/api/v3/projects/d7da5248-1a22-45cc-b051-58b5bdc04385';
     private static string $randomApiKey = 'C9cpzvOi937DrLEke0y85Q';
 
     private static function getResponse($url): bool|string
     {
-        $headers = ['X-API-Key: C9cpzvOi937DrLEke0y85Q'];
+        $headers = ['X-API-Key: Tvv_gsSIolV9UHg_EvRlYg'];
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

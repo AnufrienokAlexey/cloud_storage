@@ -15,6 +15,7 @@ class Response implements ResponseInterface
     ): void {
         header_remove();
         http_response_code($statusCode);
+        header("Access-Control-Allow-Origin: *");
         header('Content-Type: application/json');
         echo json_encode([
             'status_code' => $statusCode,
