@@ -12,10 +12,9 @@ class User
 {
     #[NoReturn] public function list(): void
     {
-        //Response::send('userList');
-        echo('UserLixsxst');
         Connect::connect(DB['dbname'], 'users');
         dump(UserService::list());
+        //Response::send('users list');
     }
 
     #[NoReturn] public function update(): void

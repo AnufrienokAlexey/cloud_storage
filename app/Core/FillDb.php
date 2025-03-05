@@ -4,44 +4,49 @@ namespace app\Core;
 
 class FillDb
 {
-    public static function getRequest($url): bool|string
+    private static string $usernameUrl = 'https://potterapi-fedeperin.vercel.app/en/characters';
+    private static string $randomDataUrl = 'https://random-data-api.com/api/v3/projects/31b583f2-351d-465f-b375-de15cbd07720';
+    private static string $randomApiKey = 'C9cpzvOi937DrLEke0y85Q';
+
+    private static function getResponse($url): bool|string
     {
+        $headers = ['X-API-Key: C9cpzvOi937DrLEke0y85Q'];
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
         curl_close($ch);
         return $response;
     }
 
-    public static function connectToOpenApi(): void
+    public static function connectToOpenApi(): array|false
     {
         try {
-            $url = 'https://potterapi-fedeperin.vercel.app/en/characters';
-            $response = self::getRequest($url);
-            $result = json_decode($response, true);
-            if (isset($result)) {
-                foreach ($result as $character) {
-                    dump($character['fullName']);
-                }
-            } else {
-                dump('Подключение к стороннему open Api не произошло!');
-            }
-            self::fillDb();
-        } catch (\Exception $e) {
-            dump($e->getMessage());
-        }
-    }
+            $response = [];
+            $arr = ['admin', 'user'];
+            $users = json_decode(self::getResponse(self::$usernameUrl), true);
+            foreach ($users as $user) {
+                $username = $user['fullName'];
+                $randomData = json_decode(self::getResponse(self::$randomDataUrl), true);
+                $email = $randomData['email'];
+                $password = $randomData['password'];
+                $speciality = $randomData['speciality'];
+                $techSkill = $randomData['tech_skill'];
+                $role = $arr[array_rand($arr, 1)];
 
-    public static function fillDb(): void
-    {
-//        $db = Connect::connect();
-//        dump($db);
-//        try {
-//            $stm = $db->prepare("SELECT * FROM users");
-//        } catch (\Exception $e) {
-//            dump($e->getMessage());
-//        }
-        echo "fillDb()";
+                $response[] = [
+                    'username' => $username,
+                    'email' => $email,
+                    'password' => $password,
+                    'speciality' => $speciality,
+                    'tech_skill' => $techSkill,
+                    'role' => $role
+                ];
+            }
+            return $response;
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
     }
 }
