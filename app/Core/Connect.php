@@ -32,7 +32,10 @@ class Connect extends Db
             $stm = Db::getInstance()->prepare(
                 "CREATE TABLE IF NOT EXISTS $table (
                         id INTEGER AUTO_INCREMENT PRIMARY KEY,
-                        username VARCHAR(255))"
+                        username VARCHAR(255),
+                        email VARCHAR(255),
+                        password VARCHAR(100),
+                        role VARCHAR(100))"
             );
             $stm->execute();
         } catch (\PDOException $e) {
@@ -42,20 +45,25 @@ class Connect extends Db
 
     private static function addUsers($dbname, $table): void
     {
-        dump(FillDb::connectToOpenApi());
-        try {
-            foreach (FillDb::connectToOpenApi() as $val) {
-                $stm = Db::getInstance()->prepare(
-                    "INSERT INTO $dbname.$table
-                        (id, username)
-                        VALUES(null, :value)"
-                );
-                $stm->bindParam(':value', $val, PDO::PARAM_STR);
-                $stm->execute();
-            }
-        } catch (\PDOException $e) {
-            error_log($e->getMessage());
-        }
+        $users = FillDb::connectToOpenApi();
+        die(dump($users));
+//        try {
+//            foreach ($users as $user) {
+//                $username = $user['fullName'];
+//                $stm = Db::getInstance()->prepare(
+//                    "INSERT INTO $dbname.$table
+//                        (id, username,  email, password, role)
+//                        VALUES(null, :username,  :email, :password, :role)"
+//                );
+//                $stm->bindParam(':username', $username, PDO::PARAM_STR);
+//                $stm->bindParam(':email', $email, PDO::PARAM_STR);
+//                $stm->bindParam(':password', $password, PDO::PARAM_STR);
+//                $stm->bindParam(':role', $role, PDO::PARAM_STR);
+//                $stm->execute();
+//            }
+//        } catch (\PDOException $e) {
+//            error_log($e->getMessage());
+//        }
     }
 
     public static function connect($dbname, $table): void
