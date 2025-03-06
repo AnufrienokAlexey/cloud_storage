@@ -34,7 +34,8 @@ class Connect extends Db
                         id INTEGER AUTO_INCREMENT PRIMARY KEY,
                         username VARCHAR(255),
                         email VARCHAR(255),
-                        password VARCHAR(100),
+                        password VARCHAR(255),
+                        birthdate  VARCHAR(255),
                         role VARCHAR(100))"
             );
             $stm->execute();
@@ -46,24 +47,23 @@ class Connect extends Db
     private static function addUsers($dbname, $table): void
     {
         $users = FillDb::connectToOpenApi();
-        die(dump($users));
-//        try {
-//            foreach ($users as $user) {
-//                $username = $user['fullName'];
-//                $stm = Db::getInstance()->prepare(
-//                    "INSERT INTO $dbname.$table
-//                        (id, username,  email, password, role)
-//                        VALUES(null, :username,  :email, :password, :role)"
-//                );
-//                $stm->bindParam(':username', $username, PDO::PARAM_STR);
-//                $stm->bindParam(':email', $email, PDO::PARAM_STR);
-//                $stm->bindParam(':password', $password, PDO::PARAM_STR);
-//                $stm->bindParam(':role', $role, PDO::PARAM_STR);
-//                $stm->execute();
-//            }
-//        } catch (\PDOException $e) {
-//            error_log($e->getMessage());
-//        }
+        try {
+            foreach ($users as $key => $user) {
+                $stm = Db::getInstance()->prepare(
+                    "INSERT INTO $dbname.$table
+                        (id, username, email, password, birthdate, role)
+                        VALUES(null, :username,  :email, :password, :birthdate, :role)"
+                );
+                $stm->bindParam(':username', $user['username'], PDO::PARAM_STR);
+                $stm->bindParam(':email', $user['email'], PDO::PARAM_STR);
+                $stm->bindParam(':password', $user['password'], PDO::PARAM_STR);
+                $stm->bindParam(':birthdate', $user['birthdate'], PDO::PARAM_STR);
+                $stm->bindParam(':role', $user['role'], PDO::PARAM_STR);
+                $stm->execute();
+            }
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
     }
 
     public static function connect($dbname, $table): void
@@ -72,11 +72,9 @@ class Connect extends Db
 
         if (!in_array($dbname, $databases)) {
             self::createNewDb($dbname);
+            self::createTable($dbname, $table);
+            self::addUsers($dbname, $table);
         }
-
-        self::createTable($dbname, $table);
-        self::addUsers($dbname, $table);
     }
-
 
 }
