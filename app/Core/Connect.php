@@ -48,7 +48,7 @@ class Connect extends Db
     {
         $users = FillDb::connectToOpenApi();
         try {
-            foreach ($users as $key => $user) {
+            foreach ($users as $user) {
                 $stm = Db::getInstance()->prepare(
                     "INSERT INTO $dbname.$table
                         (id, username, email, password, birthdate, role)

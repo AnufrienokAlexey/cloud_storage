@@ -25,6 +25,16 @@ class Request
         return explode('/', $this->getUri());
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
     public function getConfigRoute(): void
     {
         $uriArray = $this->getRoute();

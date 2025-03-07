@@ -5,7 +5,7 @@ return [
         ['GET', ['User', 'list']],
         ['PUT', ['User', 'update']],
     ],
-    '/users/get' => [
+    '/users/get/{id}' => [
         ['GET', ['User', 'get']],
     ],
     '/admin/users/list' => [
