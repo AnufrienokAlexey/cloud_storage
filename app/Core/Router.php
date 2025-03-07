@@ -6,11 +6,11 @@ class Router
 {
     public static function processRequest(): void
     {
-        $request = new Request();
-        $id = $request->id;
-        $userId = $request->userId;
-        $uri = $request->configRoute;
-        $method = $request->getMethod();
+        Request::getConfigRoute();
+        $id = Request::getId();
+        $userId = Request::getUserId();
+        $uri = Request::$configRoute;
+        $method = Request::getMethod();
 
         if (array_key_exists($uri, ROUTES)) {
             $matchMethod = false;

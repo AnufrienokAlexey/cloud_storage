@@ -2,7 +2,6 @@
 
 namespace app\Controllers;
 
-use app\Core\Request;
 use app\Core\Response;
 use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;

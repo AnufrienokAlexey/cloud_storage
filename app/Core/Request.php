@@ -4,58 +4,53 @@ namespace app\Core;
 
 class Request
 {
-    public ?int $id = null;
-    public ?int $userId = null;
-    public ?string $configRoute = null;
+    public static ?int $id = null;
+    public static ?int $userId = null;
+    public static ?string $configRoute = null;
 
-    public function __construct()
-    {
-        $this->getConfigRoute();
-    }
-
-    public function getUri(): string
+    public static function getUri(): string
     {
         $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         $uri = '/' . trim($uri, '/');
         return trim($uri);
     }
 
-    public function getRoute(): array
+    public static function getRoute(): array
     {
-        return explode('/', $this->getUri());
+        return explode('/', self::getUri());
     }
 
-    public function getId(): ?int
+    public static function getId(): ?int
     {
-        return $this->id;
+        return self::$id;
     }
 
-    public function getUserId(): ?int
+    public static function getUserId(): ?int
     {
-        return $this->userId;
+        return self::$userId;
     }
 
-    public function getConfigRoute(): void
+    public static function getConfigRoute(): void
     {
-        $uriArray = $this->getRoute();
-        $this->configRoute = implode('/', $uriArray);
+        $uriArray = self::getRoute();
+        self::$configRoute = implode('/', $uriArray);
         $lastElement = array_pop($uriArray);
 
         if (is_numeric($lastElement)) {
-            $this->id = $lastElement;
+            self::$id = $lastElement;
             $uriStr = implode('/', $uriArray);
-            $this->configRoute = "$uriStr/{id}";
+            self::$configRoute = "$uriStr/{id}";
             $lastElement2 = array_pop($uriArray);
             if (is_numeric($lastElement2)) {
-                $this->id = $lastElement2;
-                $this->userId = $lastElement;
+                self::$id = $lastElement2;
+                self::$userId = $lastElement;
                 $uriStr = implode('/', $uriArray);
-                $this->configRoute = "$uriStr/{id}/{user_id}";
+                self::$configRoute = "$uriStr/{id}/{user_id}";
             }
         }
     }
 
-    public function getMethod(): string
+    public static function getMethod(): string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
