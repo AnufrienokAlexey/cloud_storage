@@ -48,7 +48,7 @@ class Connect extends Db
     {
         $users = FillDb::connectToOpenApi();
         try {
-            foreach ($users as $key => $user) {
+            foreach ($users as $user) {
                 $stm = Db::getInstance()->prepare(
                     "INSERT INTO $dbname.$table
                         (id, username, email, password, birthdate, role)
@@ -75,6 +75,20 @@ class Connect extends Db
             self::createTable($dbname, $table);
             self::addUsers($dbname, $table);
         }
+    }
+
+    public static function getColumnsTable($dbname, $table): array|false|null
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'SHOW COLUMNS FROM ' . $dbname . '.' . $table
+            );
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
     }
 
 }

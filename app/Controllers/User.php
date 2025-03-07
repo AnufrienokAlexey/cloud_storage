@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Core\Connect;
-use app\Core\Registry;
+use app\Core\Request;
 use app\Core\Response;
 use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;
@@ -12,19 +12,37 @@ class User
 {
     #[NoReturn] public function list(): void
     {
-        Connect::connect(DB['dbname'], 'users');
-        dump(UserService::list());
-        //Response::send('users list');
+        Response::send(UserService::list());
     }
 
     #[NoReturn] public function update(): void
     {
-        Response::send('userUpdate');
+        $arr = [];
+        $i = 0;
+        $columns = Connect::getColumnsTable(DB['dbname'], 'users');
+        $entityBody = Request::getEntityBody();
+        foreach ($entityBody as $key => $value) {
+            if (in_array($key, $columns)) {
+                $arr[$key] = $value;
+                $i++;
+            }
+        }
+        if ($i === count($columns)) {
+            $id = $arr['id'];
+            $username = $arr['username'];
+            $email = $arr['email'];
+            $password = hash('sha256', $arr['password']);
+            $birthdate = $arr['birthdate'];
+            $role = $arr['role'];
+            Response::send(UserService::update($id, $username, $email, $password, $birthdate, $role), $id);
+        } else {
+            Response::send('Во входящем теле запроса отсутсвуют все данные для изменения');
+        }
     }
 
-    #[NoReturn] public function get(): void
+    #[NoReturn] public function get($id = null): void
     {
-        Response::send('userGet');
+        Response::send(UserService::get($id), $id);
     }
 
     public function login()

@@ -30,8 +30,6 @@ class Db
         if (is_null(self::$_instance)) {
             self::$_instance = new self(
                 DB['host'],
-                //DB['dbname'],
-//                DB['charset'],
                 DB['username'],
                 DB['password'],
             );

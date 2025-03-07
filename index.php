@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+use app\Core\Connect;
 use app\Core\Registry;
 use app\Core\Router;
 
@@ -18,6 +19,7 @@ define("DB", Registry::getInstance()->get('mysql'));
 
 const APP = __DIR__ . '/app';
 
+Connect::connect(DB['dbname'], 'users');
 Router::processRequest();
 
 dump(microtime(true) - $microTime);
