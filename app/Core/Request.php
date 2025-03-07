@@ -50,6 +50,11 @@ class Request
         }
     }
 
+    public static function getEntityBody(): array|null
+    {
+        return json_decode(file_get_contents('php://input'), true);
+    }
+
     public static function getMethod(): string
     {
         return $_SERVER['REQUEST_METHOD'];

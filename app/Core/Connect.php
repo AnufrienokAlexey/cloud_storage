@@ -77,4 +77,18 @@ class Connect extends Db
         }
     }
 
+    public static function getColumnsTable($dbname, $table): array|false|null
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'SHOW COLUMNS FROM ' . $dbname . '.' . $table
+            );
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
+
 }

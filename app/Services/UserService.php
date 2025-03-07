@@ -15,11 +15,19 @@ class UserService
         return $stm->fetchAll();
     }
 
-    public static function update(): array|null
+    public static function update($id, $username, $email, $password, $birthdate, $role): array|null
     {
         $stm = Db::getInstance()->prepare(
-            'SELECT * FROM cloud_storage.users'
+            'UPDATE cloud_storage.users
+                    SET username = :username, email = :email, password = :password, birthdate = :birthdate, role = :role
+                    WHERE id = :id'
         );
+        $stm->bindValue(':id', $id);
+        $stm->bindValue(':username', $username);
+        $stm->bindValue(':email', $email);
+        $stm->bindValue(':password', $password);
+        $stm->bindValue(':birthdate', $birthdate);
+        $stm->bindValue(':role', $role);
         $stm->execute();
         return $stm->fetchAll();
     }

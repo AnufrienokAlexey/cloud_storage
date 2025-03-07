@@ -2,6 +2,8 @@
 
 namespace app\Controllers;
 
+use app\Core\Connect;
+use app\Core\Request;
 use app\Core\Response;
 use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;
@@ -15,7 +17,27 @@ class User
 
     #[NoReturn] public function update(): void
     {
-        Response::send(UserService::update());
+        $arr = [];
+        $i = 0;
+        $columns = Connect::getColumnsTable(DB['dbname'], 'users');
+        $entityBody = Request::getEntityBody();
+        foreach ($entityBody as $key => $value) {
+            if (in_array($key, $columns)) {
+                $arr[$key] = $value;
+                $i++;
+            }
+        }
+        if ($i === count($columns)) {
+            $id = $arr['id'];
+            $username = $arr['username'];
+            $email = $arr['email'];
+            $password = hash('sha256', $arr['password']);
+            $birthdate = $arr['birthdate'];
+            $role = $arr['role'];
+            Response::send(UserService::update($id, $username, $email, $password, $birthdate, $role), $id);
+        } else {
+            Response::send('Во входящем теле запроса отсутсвуют все данные для изменения');
+        }
     }
 
     #[NoReturn] public function get($id = null): void
