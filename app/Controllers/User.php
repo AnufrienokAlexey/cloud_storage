@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Core\Connect;
+use app\Core\Db;
 use app\Core\Request;
 use app\Core\Response;
 use app\Services\UserService;
@@ -45,15 +46,16 @@ class User
         Response::send(UserService::get($id), $id);
     }
 
-    public function login()
+    #[NoReturn] public function login(): void
     {
+        Response::send(UserService::loginByEmail($_POST['email']));
     }
 
     public function logout()
     {
     }
 
-    public function reset_password()
+    public function resetPassword()
     {
     }
 }

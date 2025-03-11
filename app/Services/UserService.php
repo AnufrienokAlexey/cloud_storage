@@ -41,4 +41,18 @@ class UserService
         $stm->execute();
         return $stm->fetchAll();
     }
+
+    public static function loginByEmail($email): array|null
+    {
+        $stm = Db::getInstance()->prepare('SELECT * FROM cloud_storage.users WHERE email = :email');
+        $stm->bindValue(':email', $email);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            $user = $stm->fetch();
+            dump($user);
+//            if (password_verify($_POST['password'], $user['password'])) {
+//                Response::send('<UNK> <UNK> <UNK> <UNK> <UNK>');
+//            }
+        }
+    }
 }

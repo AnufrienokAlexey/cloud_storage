@@ -1,6 +1,15 @@
 <?php
 
 return [
+    '/login' => [
+        ['GET', ['User', 'login']],
+    ],
+    '/logout' => [
+        ['GET', ['User', 'logout']],
+    ],
+    '/reset_password' => [
+        ['GET', ['User', 'resetPassword']],
+    ],
     '/users' => [
         ['GET', ['User', 'list']],
         ['PUT', ['User', 'update']],
