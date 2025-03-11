@@ -48,14 +48,35 @@ class User
 
     #[NoReturn] public function login(): void
     {
-        Response::send(UserService::loginByEmail($_POST['email']));
+        if (isset($_POST['login'], $_POST['password'])) {
+            $password = hash('sha256', $_POST['password']);
+            $email = UserService::auth($_POST['login'], $password);
+            if ($email !== null) {
+                setcookie('login', $email, time() + 3600);
+            } else {
+                die('Пользователя с таким логином и паролем не существует!');
+            }
+        }
     }
 
-    public function logout()
+    public function logout(): void
     {
+        setcookie('login', '', time() - 3600);
+        header('Location: /');
     }
 
     public function resetPassword()
     {
+        if (isset($_POST['email'])) {
+            dump($_POST['email']);
+            $to = 'nobody@example.com';
+            $subject = 'the subject';
+            $message = 'hello';
+            $headers = 'From: webmaster@example.com' . "\r\n" .
+                'Reply-To: webmaster@example.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+            mail($to, $subject, $message, $headers);
+        }
     }
 }

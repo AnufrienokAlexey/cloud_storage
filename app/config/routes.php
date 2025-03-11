@@ -2,13 +2,13 @@
 
 return [
     '/login' => [
-        ['GET', ['User', 'login']],
+        ['POST', ['User', 'login']],
     ],
     '/logout' => [
-        ['GET', ['User', 'logout']],
+        ['POST', ['User', 'logout']],
     ],
     '/reset_password' => [
-        ['GET', ['User', 'resetPassword']],
+        ['POST', ['User', 'resetPassword']],
     ],
     '/users' => [
         ['GET', ['User', 'list']],
