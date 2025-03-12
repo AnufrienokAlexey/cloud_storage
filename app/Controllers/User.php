@@ -65,14 +65,28 @@ class User
         header('Location: /');
     }
 
-    public function isEmailExist(): void
+    public function resetPassword(): void
     {
-        Connect::createColumn('cloud_storage', 'users', 'reset_key');
         if (isset($_POST['email'])) {
-            $email = UserService::isEmailExist($_POST['email']);
+            $email = UserService::resetPassword($_POST['email']);
             if ($email !== null) {
-                $_GET['email'] = $email;
-                header('Location: /reset_password');
+                $resetKey = uniqid();
+                Connect::createColumn(DB['dbname'], 'users', 'reset_key');
+                UserService::addResetKey($resetKey, $email);
+                $subject = 'Восстановление пароля';
+                $message = 'Вы можете восстановить пароль по следующей ссылке - 
+                <a href="http://' . $_SERVER['HTTP_HOST'] . '/new_password/?resetKey=' . $resetKey . '&email=' . $email . '">
+                    Сбросить пароль
+                </a>';
+                $headers = 'From: webmaster@example.com' . "\r\n" .
+                    'Reply-To: webmaster@example.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+//                mail($email, $subject, $message, $headers);
+                echo $message;
+                echo "Ссылка для сброса пароля отправлена на вашу почту!";
+
+
+//                header('Location: /new_password');
 //                if (isset($_POST['reset-password'])) {
 //                    if (UserService::resetPassword($_POST['reset-password'], $email)) {
 //                        echo 'Вы успешно сменили пароль!';
@@ -88,16 +102,5 @@ class User
 
     public function newPassword(): void
     {
-        dump($_GET['email']);
-        $resetKey = uniqid();
-        UserService::addResetKey($resetKey, $_GET['email']);
-        $subject = 'Восстановление пароля';
-        $message = 'Вы можете восстановить пароль по следующей ссылке - 
-        <a href=http://' . $_SERVER['HTTP_HOST'] . '/reset_password/?resetKey=' . $resetKey . '>Сбросить пароль</a>';
-        $headers = 'From: webmaster@example.com' . "\r\n" .
-            'Reply-To: webmaster@example.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-
-        echo $message;
     }
 }

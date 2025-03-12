@@ -55,7 +55,6 @@ class Connect extends Db
             $stm->execute();
             $columns = $stm->fetchAll(PDO::FETCH_COLUMN);
             if (!in_array($column, $columns)) {
-                dump('match');
                 $stm = Db::getInstance()->prepare(
                     "ALTER TABLE cloud_storage.users ADD COLUMN $column VARCHAR(255) DEFAULT NULL COLLATE utf8_general_ci;"
                 );

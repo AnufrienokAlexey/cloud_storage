@@ -8,8 +8,10 @@ return [
         ['POST', ['User', 'logout']],
     ],
     '/reset_password' => [
+        ['POST', ['User', 'resetPassword']],
+    ],
+    '/new_password' => [
         ['GET', ['User', 'newPassword']],
-        ['POST', ['User', 'isEmailExist']],
     ],
     '/users' => [
         ['GET', ['User', 'list']],

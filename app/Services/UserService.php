@@ -57,7 +57,7 @@ class UserService
         return null;
     }
 
-    public static function isEmailExist($email): string|null
+    public static function resetPassword($email): string|null
     {
         $stm = Db::getInstance()->prepare(
             'SELECT email FROM cloud_storage.users WHERE email = :email'
@@ -71,7 +71,7 @@ class UserService
         return null;
     }
 
-    public static function resetPassword($password, $email): bool
+    public static function newPassword($password, $email): bool
     {
         $stm = Db::getInstance()->prepare(
             'UPDATE cloud_storage.users SET password = :password WHERE (email) = (:email)'
