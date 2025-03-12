@@ -67,6 +67,7 @@ class User
 
     public function isEmailExist(): void
     {
+        Connect::createColumn('cloud_storage', 'users', 'reset_key');
         if (isset($_POST['email'])) {
             $email = UserService::isEmailExist($_POST['email']);
             if ($email !== null) {

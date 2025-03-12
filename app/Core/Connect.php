@@ -36,10 +36,31 @@ class Connect extends Db
                         email VARCHAR(255),
                         password VARCHAR(255),
                         birthdate  VARCHAR(255),
-                        role VARCHAR(100),
-                        reset_key VARCHAR(255) DEFAULT NULL)"
+                        role VARCHAR(100))"
             );
             $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
+    public static function createColumn($dbname, $table, $column): void
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                "SELECT COLUMN_NAME FROM information_schema.columns 
+                   WHERE table_name = :table;"
+            );
+            $stm->bindValue(':table', $table);
+            $stm->execute();
+            $columns = $stm->fetchAll(PDO::FETCH_COLUMN);
+            if (!in_array($column, $columns)) {
+                dump('match');
+                $stm = Db::getInstance()->prepare(
+                    "ALTER TABLE cloud_storage.users ADD COLUMN $column VARCHAR(255) DEFAULT NULL COLLATE utf8_general_ci;"
+                );
+                $stm->execute();
+            }
         } catch (\PDOException $e) {
             error_log($e->getMessage());
         }
