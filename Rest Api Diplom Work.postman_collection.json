@@ -46,14 +46,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost/users/get/42",
+					"raw": "localhost/users/get/12",
 					"host": [
 						"localhost"
 					],
 					"path": [
 						"users",
 						"get",
-						"42"
+						"12"
 					]
 				}
 			},
@@ -84,7 +84,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost/admin/users/get/42",
+					"raw": "localhost/admin/users/get/12",
 					"host": [
 						"localhost"
 					],
@@ -92,7 +92,7 @@
 						"admin",
 						"users",
 						"get",
-						"42"
+						"12"
 					]
 				}
 			},
@@ -310,14 +310,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost/files/share/{id}",
+					"raw": "localhost/files/share/42",
 					"host": [
 						"localhost"
 					],
 					"path": [
 						"files",
 						"share",
-						"{id}"
+						"42"
 					]
 				}
 			},
@@ -329,7 +329,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost/files/share/42/42",
+					"raw": "localhost/files/share/42/68",
 					"host": [
 						"localhost"
 					],
@@ -337,7 +337,7 @@
 						"files",
 						"share",
 						"42",
-						"42"
+						"68"
 					]
 				}
 			},
@@ -349,7 +349,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost/files/share/42/42",
+					"raw": "localhost/files/share/42/68",
 					"host": [
 						"localhost"
 					],
@@ -357,7 +357,146 @@
 						"files",
 						"share",
 						"42",
-						"42"
+						"68"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "qwerty@qwerty.qwerty",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "qwertyqwerty",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/login",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost/logout",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/reset_password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "qwerty@qwerty.qwerty",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/reset_password",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"reset_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/new_password",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/new_password/?resetKey=67d1d31feeb68",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"new_password",
+						""
+					],
+					"query": [
+						{
+							"key": "resetKey",
+							"value": "67d1d31feeb68"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/new_password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "newPassword",
+							"value": "111",
+							"type": "text"
+						},
+						{
+							"key": "newPasswordConfirm",
+							"value": "111",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost/new_password?resetKey=67d1d62f89db7",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"new_password"
+					],
+					"query": [
+						{
+							"key": "resetKey",
+							"value": "67d1d62f89db7"
+						}
 					]
 				}
 			},

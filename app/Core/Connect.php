@@ -65,6 +65,33 @@ class Connect extends Db
         }
     }
 
+    public static function getColumn($table, $column): bool
+    {
+        $stm = Db::getInstance()->prepare(
+            "SELECT COLUMN_NAME FROM information_schema.columns 
+                   WHERE table_name = :table;"
+        );
+        $stm->bindValue(':table', $table);
+        $stm->execute();
+        $columns = $stm->fetchAll(PDO::FETCH_COLUMN);
+        if (!in_array($column, $columns)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function deleteColumn($column): void
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                "ALTER TABLE cloud_storage.users DROP COLUMN $column;"
+            );
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
     private static function addUsers($dbname, $table): void
     {
         $users = FillDb::connectToOpenApi();
@@ -111,5 +138,4 @@ class Connect extends Db
         }
         return false;
     }
-
 }

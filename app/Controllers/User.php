@@ -75,7 +75,7 @@ class User
                 UserService::addResetKey($resetKey, $email);
                 $subject = 'Восстановление пароля';
                 $message = 'Вы можете восстановить пароль по следующей ссылке - 
-                <a href="http://' . $_SERVER['HTTP_HOST'] . '/new_password/?resetKey=' . $resetKey . '&email=' . $email . '">
+                <a href="http://' . $_SERVER['HTTP_HOST'] . '/new_password/?resetKey=' . $resetKey . '">
                     Сбросить пароль
                 </a>';
                 $headers = 'From: webmaster@example.com' . "\r\n" .
@@ -84,16 +84,6 @@ class User
 //                mail($email, $subject, $message, $headers);
                 echo $message;
                 echo "Ссылка для сброса пароля отправлена на вашу почту!";
-
-
-//                header('Location: /new_password');
-//                if (isset($_POST['reset-password'])) {
-//                    if (UserService::resetPassword($_POST['reset-password'], $email)) {
-//                        echo 'Вы успешно сменили пароль!';
-//                    } else {
-//                        echo 'Смена пароля не удалась!';
-//                    }
-//                }
             } else {
                 echo "Пользователя с таким email - {$_POST['email']} не существует";
             }
@@ -102,5 +92,30 @@ class User
 
     public function newPassword(): void
     {
+        if (isset($_GET['resetKey'])) {
+            echo 'Вы перешли по персональной ссылке для сброса пароля. Введите новый пароль и подтвердите его';
+        } else {
+            echo 'Ссылка более не действительна';
+//            header('Location: /');
+        }
+    }
+
+    public function setPassword(): void
+    {
+        if (isset($_POST['newPassword'], $_POST['newPasswordConfirm']) &&
+            $_POST['newPassword'] === $_POST['newPasswordConfirm']) {
+            $password = hash('sha256', $_POST['newPassword']);
+            if (isset($_GET['resetKey'])) {
+                if (UserService::newPassword($password, $_GET['resetKey'])) {
+                    unset($_GET['resetKey']);
+                    unset($_GET['newPassword']);
+                    unset($_GET['newPasswordConfirm']);
+                    Connect::deleteColumn('reset_key');
+                    echo 'Вы успешно сменили пароль!';
+                } else {
+                    echo 'Смена пароля не удалась!';
+                }
+            }
+        }
     }
 }

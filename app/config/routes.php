@@ -12,6 +12,7 @@ return [
     ],
     '/new_password' => [
         ['GET', ['User', 'newPassword']],
+        ['POST', ['User', 'setPassword']],
     ],
     '/users' => [
         ['GET', ['User', 'list']],

@@ -2,6 +2,7 @@
 
 namespace app\Services;
 
+use app\Core\Connect;
 use app\Core\Db;
 
 class UserService
@@ -71,22 +72,24 @@ class UserService
         return null;
     }
 
-    public static function newPassword($password, $email): bool
+    public static function newPassword($password, $resetKey): bool
     {
-        $stm = Db::getInstance()->prepare(
-            'UPDATE cloud_storage.users SET password = :password WHERE (email) = (:email)'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':password', $password);
-        $stm->execute();
-        return $stm->execute();
+        if (Connect::getColumn('users', 'reset_key')) {
+            $stm = Db::getInstance()->prepare(
+                'UPDATE cloud_storage.users SET password = :password WHERE (reset_key) = (:reset_key)'
+            );
+            $stm->bindValue(':reset_key', $resetKey);
+            $stm->bindValue(':password', $password);
+            $stm->execute();
+            return $stm->execute();
+        } else {
+            echo 'Ссылка более не действительна! Возможно Вы уже изменили пароль ранее.' . PHP_EOL;
+        }
+        return false;
     }
 
     public static function addResetKey($resetKey, $email): bool
     {
-//        $stm = Db::getInstance()->prepare(
-//            'SELECT reset_key FROM cloud_storage.users WHERE email = :email'
-//        );
         $stm = Db::getInstance()->prepare(
             'UPDATE cloud_storage.users SET reset_key = :reset_key WHERE email = :email'
         );
