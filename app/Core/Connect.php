@@ -36,7 +36,8 @@ class Connect extends Db
                         email VARCHAR(255),
                         password VARCHAR(255),
                         birthdate  VARCHAR(255),
-                        role VARCHAR(100))"
+                        role VARCHAR(100),
+                        reset_key VARCHAR(255) DEFAULT NULL)"
             );
             $stm->execute();
         } catch (\PDOException $e) {

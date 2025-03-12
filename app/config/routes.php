@@ -9,7 +9,7 @@ return [
     ],
     '/reset_password' => [
         ['GET', ['User', 'newPassword']],
-        ['POST', ['User', 'resetPassword']],
+        ['POST', ['User', 'isEmailExist']],
     ],
     '/users' => [
         ['GET', ['User', 'list']],

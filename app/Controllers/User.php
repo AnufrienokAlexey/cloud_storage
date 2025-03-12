@@ -65,18 +65,20 @@ class User
         header('Location: /');
     }
 
-    public function resetPassword(): void
+    public function isEmailExist(): void
     {
         if (isset($_POST['email'])) {
             $email = UserService::isEmailExist($_POST['email']);
             if ($email !== null) {
-                if (isset($_POST['reset-password'])) {
-                    if (UserService::resetPassword($_POST['reset-password'], $email)) {
-                        echo 'Вы успешно сменили пароль!';
-                    } else {
-                        echo 'Смена пароля не удалась!';
-                    }
-                }
+                $_GET['email'] = $email;
+                header('Location: /reset_password');
+//                if (isset($_POST['reset-password'])) {
+//                    if (UserService::resetPassword($_POST['reset-password'], $email)) {
+//                        echo 'Вы успешно сменили пароль!';
+//                    } else {
+//                        echo 'Смена пароля не удалась!';
+//                    }
+//                }
             } else {
                 echo "Пользователя с таким email - {$_POST['email']} не существует";
             }
@@ -85,11 +87,12 @@ class User
 
     public function newPassword(): void
     {
-        echo 'new password';
+        dump($_GET['email']);
+        $resetKey = uniqid();
+        UserService::addResetKey($resetKey, $_GET['email']);
         $subject = 'Восстановление пароля';
         $message = 'Вы можете восстановить пароль по следующей ссылке - 
-                    <a href=http://' . $_SERVER['HTTP_HOST'] . '/reset_password/?reset=reset&time=' . time(
-            ) . '>Сбросить пароль</a>';
+        <a href=http://' . $_SERVER['HTTP_HOST'] . '/reset_password/?resetKey=' . $resetKey . '>Сбросить пароль</a>';
         $headers = 'From: webmaster@example.com' . "\r\n" .
             'Reply-To: webmaster@example.com' . "\r\n" .
             'X-Mailer: PHP/' . phpversion();

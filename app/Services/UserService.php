@@ -81,4 +81,17 @@ class UserService
         $stm->execute();
         return $stm->execute();
     }
+
+    public static function addResetKey($resetKey, $email): bool
+    {
+//        $stm = Db::getInstance()->prepare(
+//            'SELECT reset_key FROM cloud_storage.users WHERE email = :email'
+//        );
+        $stm = Db::getInstance()->prepare(
+            'UPDATE cloud_storage.users SET reset_key = :reset_key WHERE email = :email'
+        );
+        $stm->bindValue(':reset_key', $resetKey);
+        $stm->bindValue(':email', $email);
+        return $stm->execute();
+    }
 }
