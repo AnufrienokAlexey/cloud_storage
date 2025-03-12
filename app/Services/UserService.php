@@ -2,6 +2,7 @@
 
 namespace app\Services;
 
+use app\Core\Connect;
 use app\Core\Db;
 
 class UserService
@@ -40,5 +41,60 @@ class UserService
         $stm->bindValue(':id', $id);
         $stm->execute();
         return $stm->fetchAll();
+    }
+
+    public static function auth($email, $password): string|null
+    {
+        $stm = Db::getInstance()->prepare(
+            'SELECT email FROM cloud_storage.users WHERE email = :email AND password = :password'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->bindValue(':password', $password);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            $user = $stm->fetch();
+            return $user['email'];
+        }
+        return null;
+    }
+
+    public static function resetPassword($email): string|null
+    {
+        $stm = Db::getInstance()->prepare(
+            'SELECT email FROM cloud_storage.users WHERE email = :email'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            $user = $stm->fetch();
+            return $user['email'];
+        }
+        return null;
+    }
+
+    public static function newPassword($password, $resetKey): bool
+    {
+        if (Connect::getColumn('users', 'reset_key')) {
+            $stm = Db::getInstance()->prepare(
+                'UPDATE cloud_storage.users SET password = :password WHERE (reset_key) = (:reset_key)'
+            );
+            $stm->bindValue(':reset_key', $resetKey);
+            $stm->bindValue(':password', $password);
+            $stm->execute();
+            return $stm->execute();
+        } else {
+            echo 'Ссылка более не действительна! Возможно Вы уже изменили пароль ранее.' . PHP_EOL;
+        }
+        return false;
+    }
+
+    public static function addResetKey($resetKey, $email): bool
+    {
+        $stm = Db::getInstance()->prepare(
+            'UPDATE cloud_storage.users SET reset_key = :reset_key WHERE email = :email'
+        );
+        $stm->bindValue(':reset_key', $resetKey);
+        $stm->bindValue(':email', $email);
+        return $stm->execute();
     }
 }
