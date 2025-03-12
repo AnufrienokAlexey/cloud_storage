@@ -3,9 +3,9 @@
 namespace app\Controllers;
 
 use app\Core\Connect;
-use app\Core\Db;
 use app\Core\Request;
 use app\Core\Response;
+use app\Core\Router;
 use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -65,18 +65,35 @@ class User
         header('Location: /');
     }
 
-    public function resetPassword()
+    public function resetPassword(): void
     {
         if (isset($_POST['email'])) {
-            dump($_POST['email']);
-            $to = 'nobody@example.com';
-            $subject = 'the subject';
-            $message = 'hello';
-            $headers = 'From: webmaster@example.com' . "\r\n" .
-                'Reply-To: webmaster@example.com' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-
-            mail($to, $subject, $message, $headers);
+            $email = UserService::isEmailExist($_POST['email']);
+            if ($email !== null) {
+                if (isset($_POST['reset-password'])) {
+                    if (UserService::resetPassword($_POST['reset-password'], $email)) {
+                        echo 'Вы успешно сменили пароль!';
+                    } else {
+                        echo 'Смена пароля не удалась!';
+                    }
+                }
+            } else {
+                echo "Пользователя с таким email - {$_POST['email']} не существует";
+            }
         }
+    }
+
+    public function newPassword(): void
+    {
+        echo 'new password';
+        $subject = 'Восстановление пароля';
+        $message = 'Вы можете восстановить пароль по следующей ссылке - 
+                    <a href=http://' . $_SERVER['HTTP_HOST'] . '/reset_password/?reset=reset&time=' . time(
+            ) . '>Сбросить пароль</a>';
+        $headers = 'From: webmaster@example.com' . "\r\n" .
+            'Reply-To: webmaster@example.com' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        echo $message;
     }
 }

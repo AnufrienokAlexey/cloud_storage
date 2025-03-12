@@ -8,6 +8,7 @@ return [
         ['POST', ['User', 'logout']],
     ],
     '/reset_password' => [
+        ['GET', ['User', 'newPassword']],
         ['POST', ['User', 'resetPassword']],
     ],
     '/users' => [

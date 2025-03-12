@@ -56,4 +56,29 @@ class UserService
         }
         return null;
     }
+
+    public static function isEmailExist($email): string|null
+    {
+        $stm = Db::getInstance()->prepare(
+            'SELECT email FROM cloud_storage.users WHERE email = :email'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            $user = $stm->fetch();
+            return $user['email'];
+        }
+        return null;
+    }
+
+    public static function resetPassword($password, $email): bool
+    {
+        $stm = Db::getInstance()->prepare(
+            'UPDATE cloud_storage.users SET password = :password WHERE (email) = (:email)'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->bindValue(':password', $password);
+        $stm->execute();
+        return $stm->execute();
+    }
 }
