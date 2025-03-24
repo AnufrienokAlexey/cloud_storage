@@ -9,9 +9,7 @@ class FileService
         if (UserService::isAuth()) {
             dump($_COOKIE['login']);
             dump($file);
-            //$email = $_COOKIE['login'];
-            //$email = 'gerhard.vonrueden@gmail.com';
-            $email = 'login';
+            $email = $_COOKIE['login'];
             $uploadDir = APP . DS . 'Repositories' . DS . $email;
 
             dump($uploadDir);
