@@ -10,7 +10,11 @@ class Admin
 {
     #[NoReturn] public function list(): void
     {
-        Response::send(AdminService::list());
+        if (AdminService::isAdmin()) {
+            Response::send(AdminService::list());
+        } else {
+            echo('Вы не можете просматривать список пользователей так как Вы не авторизовались как администратор');
+        }
     }
 
     #[NoReturn] public function get($id = null): void

@@ -6,6 +6,22 @@ use app\Core\Db;
 
 class AdminService
 {
+    public static function isAdmin(): bool
+    {
+        if (isset ($_COOKIE['login'])) {
+            $stm = Db::getInstance()->prepare(
+                'SELECT * FROM cloud_storage.users WHERE email = :email AND role = :role'
+            );
+            $stm->bindValue(':email', $_COOKIE['login']);
+            $stm->bindValue(':role', 'admin');
+            $stm->execute();
+            if ($stm->rowCount() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function list(): array|null
     {
         $stm = Db::getInstance()->prepare(
@@ -35,7 +51,7 @@ class AdminService
         return $stm->fetchAll();
     }
 
-    public static function update($id, $username, $email, $password, $birthdate, $role): array|null
+    public static function update($id, $username, $email, $password, $birthdate, $role): void
     {
 //        $stm = Db::getInstance()->prepare(
 //            'UPDATE cloud_storage.users
