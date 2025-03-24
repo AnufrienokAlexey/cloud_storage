@@ -53,6 +53,7 @@ class User
             $email = UserService::auth($_POST['login'], $password);
             if ($email !== null) {
                 setcookie('login', $email, time() + 3600);
+                echo("Вы успешно авторизовались как $_POST[login]");
             } else {
                 die('Пользователя с таким логином и паролем не существует!');
             }
