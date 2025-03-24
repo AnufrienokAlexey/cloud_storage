@@ -44,6 +44,25 @@ class Connect extends Db
         }
     }
 
+    private static function createTableUserPath($dbname): void
+    {
+        try {
+            Db::getInstance()->query("USE $dbname");
+            $stm = Db::getInstance()->prepare(
+                "CREATE TABLE cloud_storage.userpaths (
+                email VARCHAR(255) NOT NULL UNIQUE ,
+                path varchar(255) NOT NULL
+                )
+                ENGINE=InnoDB
+                DEFAULT CHARSET=utf8mb3
+                COLLATE=utf8mb3_general_ci;"
+            );
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
     public static function createColumn($dbname, $table, $column): void
     {
         try {
@@ -126,6 +145,7 @@ class Connect extends Db
             self::createNewDb($dbname);
             self::createTable($dbname, $table);
             self::addUsers($dbname, $table);
+            self::createTableUserPath($dbname);
         }
     }
 
@@ -142,4 +162,5 @@ class Connect extends Db
         }
         return false;
     }
+
 }

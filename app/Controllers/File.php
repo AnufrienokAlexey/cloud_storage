@@ -10,7 +10,7 @@ class File
 {
     #[NoReturn] public function list(): void
     {
-        Response::send('filesList');
+        Response::send(FileService::list());
     }
 
     #[NoReturn] public function getId($id = null): void
