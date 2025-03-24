@@ -3,9 +3,9 @@
 namespace app\Controllers;
 
 use app\Core\Connect;
+use app\Core\Db;
 use app\Core\Request;
 use app\Core\Response;
-use app\Core\Router;
 use app\Services\UserService;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -53,6 +53,9 @@ class User
             $email = UserService::auth($_POST['login'], $password);
             if ($email !== null) {
                 setcookie('login', $email, time() + 3600);
+                session_start();
+                $_SESSION['login'] = $email;
+                echo("Вы успешно авторизовались как $_POST[login]");
             } else {
                 die('Пользователя с таким логином и паролем не существует!');
             }
@@ -62,6 +65,7 @@ class User
     public function logout(): void
     {
         setcookie('login', '', time() - 3600);
+        session_destroy();
         header('Location: /');
     }
 

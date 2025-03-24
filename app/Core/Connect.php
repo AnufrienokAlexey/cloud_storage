@@ -44,19 +44,40 @@ class Connect extends Db
         }
     }
 
+    private static function createTableUserPath($dbname): void
+    {
+        try {
+            Db::getInstance()->query("USE $dbname");
+            $stm = Db::getInstance()->prepare(
+                "CREATE TABLE cloud_storage.userpaths (
+                email VARCHAR(255) NOT NULL UNIQUE ,
+                path varchar(255) NOT NULL
+                )
+                ENGINE=InnoDB
+                DEFAULT CHARSET=utf8mb3
+                COLLATE=utf8mb3_general_ci;"
+            );
+            $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
     public static function createColumn($dbname, $table, $column): void
     {
         try {
             $stm = Db::getInstance()->prepare(
-                "SELECT COLUMN_NAME FROM information_schema.columns 
-                   WHERE table_name = :table;"
+                "SELECT COLUMN_NAME
+                FROM information_schema.columns 
+                WHERE table_name = :table;"
             );
             $stm->bindValue(':table', $table);
             $stm->execute();
             $columns = $stm->fetchAll(PDO::FETCH_COLUMN);
             if (!in_array($column, $columns)) {
                 $stm = Db::getInstance()->prepare(
-                    "ALTER TABLE cloud_storage.users ADD COLUMN $column VARCHAR(255) DEFAULT NULL COLLATE utf8_general_ci;"
+                    "ALTER TABLE cloud_storage.users 
+                    ADD COLUMN $column VARCHAR(255) DEFAULT NULL COLLATE utf8_general_ci;"
                 );
                 $stm->execute();
             }
@@ -68,8 +89,9 @@ class Connect extends Db
     public static function getColumn($table, $column): bool
     {
         $stm = Db::getInstance()->prepare(
-            "SELECT COLUMN_NAME FROM information_schema.columns 
-                   WHERE table_name = :table;"
+            "SELECT COLUMN_NAME
+            FROM information_schema.columns 
+            WHERE table_name = :table;"
         );
         $stm->bindValue(':table', $table);
         $stm->execute();
@@ -84,7 +106,8 @@ class Connect extends Db
     {
         try {
             $stm = Db::getInstance()->prepare(
-                "ALTER TABLE cloud_storage.users DROP COLUMN $column;"
+                "ALTER TABLE cloud_storage.users
+                DROP COLUMN $column;"
             );
             $stm->execute();
         } catch (\PDOException $e) {
@@ -99,8 +122,8 @@ class Connect extends Db
             foreach ($users as $user) {
                 $stm = Db::getInstance()->prepare(
                     "INSERT INTO $dbname.$table
-                        (id, username, email, password, birthdate, role)
-                        VALUES(null, :username,  :email, :password, :birthdate, :role)"
+                    (id, username, email, password, birthdate, role)
+                    VALUES(null, :username,  :email, :password, :birthdate, :role)"
                 );
                 $stm->bindParam(':username', $user['username'], PDO::PARAM_STR);
                 $stm->bindParam(':email', $user['email'], PDO::PARAM_STR);
@@ -122,6 +145,7 @@ class Connect extends Db
             self::createNewDb($dbname);
             self::createTable($dbname, $table);
             self::addUsers($dbname, $table);
+            self::createTableUserPath($dbname);
         }
     }
 
@@ -138,4 +162,5 @@ class Connect extends Db
         }
         return false;
     }
+
 }

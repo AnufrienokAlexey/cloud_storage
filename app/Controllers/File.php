@@ -3,13 +3,14 @@
 namespace app\Controllers;
 
 use app\Core\Response;
+use app\Services\FileService;
 use JetBrains\PhpStorm\NoReturn;
 
 class File
 {
     #[NoReturn] public function list(): void
     {
-        Response::send('filesList');
+        Response::send(FileService::list());
     }
 
     #[NoReturn] public function getId($id = null): void
@@ -19,7 +20,10 @@ class File
 
     #[NoReturn] public function add(): void
     {
-        Response::send('filesAdd');
+        if (isset($_FILES['file'])) {
+            FileService::add($_FILES['file']);
+        }
+        //Response::send('filesAdd');
     }
 
     #[NoReturn] public function rename(): void

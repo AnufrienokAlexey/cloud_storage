@@ -10,21 +10,37 @@ class Admin
 {
     #[NoReturn] public function list(): void
     {
-        Response::send(AdminService::list());
+        if (AdminService::isAdmin()) {
+            Response::send(AdminService::list());
+        } else {
+            echo('Вы не можете просматривать список пользователей так как Вы не авторизовались как администратор');
+        }
     }
 
-    #[NoReturn] public function get($id = null): void
+    #[NoReturn] public static function get($id = null): void
     {
-        Response::send(AdminService::get($id), $id);
+        if (AdminService::isAdmin()) {
+            Response::send(AdminService::get($id), $id);
+        } else {
+            echo('Вы не можете просматривать пользователя так как Вы не авторизовались как администратор');
+        }
     }
 
     #[NoReturn] public function delete($id = null): void
     {
-        Response::send(AdminService::delete($id), $id);
+        if (AdminService::isAdmin()) {
+            Response::send(AdminService::delete($id), $id);
+        } else {
+            echo('Вы не можете удалить пользователя так как Вы не авторизовались как администратор');
+        }
     }
 
-    #[NoReturn] public function update($id, $username, $email, $password, $birthdate, $role): void
+    #[NoReturn] public function update($id = null): void
     {
-        Response::send(AdminService::update($id, $username, $email, $password, $birthdate, $role), $id);
+        if (AdminService::isAdmin()) {
+            Response::send(AdminService::update($id), $id);
+        } else {
+            echo('Вы не можете обновить данные список пользователя так как Вы не авторизовались как администратор');
+        }
     }
 }
