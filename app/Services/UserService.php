@@ -76,7 +76,8 @@ class UserService
     {
         if (Connect::getColumn('users', 'reset_key')) {
             $stm = Db::getInstance()->prepare(
-                'UPDATE cloud_storage.users SET password = :password WHERE (reset_key) = (:reset_key)'
+                'UPDATE cloud_storage.users
+                SET password = :password WHERE (reset_key) = (:reset_key)'
             );
             $stm->bindValue(':reset_key', $resetKey);
             $stm->bindValue(':password', $password);
