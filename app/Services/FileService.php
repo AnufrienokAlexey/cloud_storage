@@ -9,27 +9,61 @@ class FileService
 {
     public static function add($file): void
     {
-        if (UserService::isAuth()) {
+        //if (UserService::isAuth()) {
+        if ($_FILES["file"]["error"] == 0) {
+            $tmp_name = $_FILES["file"]["tmp_name"];
+            $name = basename($_FILES["file"]["name"]);
             $email = $_COOKIE['login'];
             $path = self::getPath($email);
+            $uploadDir = null;
             if ($path == null) {
-                self::addRow($email, uniqid());
+                $path = uniqid();
+                $fullPath = $path . '/' . $name;
+                self::addRow($email, $path, $fullPath);
+                $uploadDir = APP . DS . 'Repositories' . DS . $path;
+            } else {
+                $path = self::getPath($email);
+                $fullPath = $path['path'] . '/' . $name;
+                $id = self::getId($email, $fullPath);
+                dump($id);
+                if (count($id) > 0) {
+                    self::deleteRow($id[0]);
+                }
+                self::addRow($email, $path['path'], $fullPath);
+                $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
             }
-            $path = self::getPath($email);
-            $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
 
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
 
-            if ($_FILES["file"]["error"] == 0) {
-                $tmp_name = $_FILES["file"]["tmp_name"];
-                $name = basename($_FILES["file"]["name"]);
-                move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
-            }
+            move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
         } else {
-            echo('Вы не авторизованы');
+            echo 'Файл содержит ошибки';
         }
+//        } else {
+//            echo('Вы не авторизованы');
+//        }
+    }
+
+    public static function deleteRow($id): void
+    {
+        $stm = Db::getInstance()->prepare(
+            'DELETE FROM cloud_storage.userpaths WHERE id = :id'
+        );
+        $stm->bindValue(':id', $id);
+        $stm->execute();
+    }
+
+    public static function getId($email, $fullPath): array
+    {
+        $stm = Db::getInstance()->prepare(
+            'SELECT id FROM cloud_storage.userpaths WHERE email = :email AND fullpath = :fullpath'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->bindValue(':fullpath', $fullPath);
+        $stm->execute();
+        return $stm->fetchAll(PDO::FETCH_COLUMN);
     }
 
     public static function getPath($email): array|null|string
@@ -42,13 +76,15 @@ class FileService
         return $stm->fetch();
     }
 
-    public static function addRow($email, $path): void
+    public static function addRow($email, $path, $fullPath): void
     {
         $stm = Db::getInstance()->prepare(
-            "INSERT INTO cloud_storage.userpaths (email, path) VALUES (:email,:path)"
+            "INSERT INTO cloud_storage.userpaths (email, path, fullpath) 
+            VALUES (:email,:path, :fullPath)"
         );
         $stm->bindValue(':email', $email);
         $stm->bindValue(':path', $path);
+        $stm->bindValue(':fullPath', $fullPath);
         $stm->execute();
     }
 
