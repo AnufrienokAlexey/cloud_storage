@@ -18,6 +18,7 @@ define("ROUTES", require_once(__DIR__ . '/app/config/routes.php'));
 define("DB", Registry::getInstance()->get('mysql'));
 
 const APP = __DIR__ . '/app';
+const DS = DIRECTORY_SEPARATOR;
 
 Connect::connect(DB['dbname'], 'users');
 Router::processRequest();

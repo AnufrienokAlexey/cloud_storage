@@ -58,6 +58,21 @@ class UserService
         return null;
     }
 
+    public static function isAuth(): bool
+    {
+        if (isset ($_COOKIE['login'])) {
+            $stm = Db::getInstance()->prepare(
+                'SELECT * FROM cloud_storage.users WHERE email = :email'
+            );
+            $stm->bindValue(':email', $_COOKIE['login']);
+            $stm->execute();
+            if ($stm->rowCount() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function resetPassword($email): string|null
     {
         $stm = Db::getInstance()->prepare(
