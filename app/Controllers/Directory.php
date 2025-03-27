@@ -3,13 +3,19 @@
 namespace app\Controllers;
 
 use app\Core\Response;
+use app\Services\DirectoryService;
 use JetBrains\PhpStorm\NoReturn;
 
 class Directory
 {
     #[NoReturn] public function add(): void
     {
-        Response::send('directoriesAdd');
+        if (!empty($_POST['directory'])) {
+            Response::send(DirectoryService::addDirectory($_POST['directory']));
+        } else {
+            Response::send('В теле запроса нет имени директории');
+        }
+//        Response::send(DirectoryService::addDirectory());
     }
 
     #[NoReturn] public function rename(): void

@@ -25,7 +25,7 @@ class FileService
                     $path = self::getPath($email);
                     $fullPath = $path['path'] . '/' . $name;
                     $id = self::getIdFullPath($email, $fullPath);
-                    if (isset($id['id']) and $id['id'] >= 0) {
+                    if (isset($id['id']) and $id['id'] > 0) {
                         self::updateRow($id['id'], $fullPath);
                     } else {
                         self::addRow($email, $path['path'], $fullPath);
