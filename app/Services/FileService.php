@@ -175,4 +175,48 @@ class FileService
         $stm->execute();
         return $stm->fetch();
     }
+
+    public static function renameFile(): string|false
+    {
+        if (UserService::isAuth()) {
+            $input = file_get_contents('php://input');
+            $request = json_decode($input, true);
+            $file = $request['file'];
+            $newFile = $request['newFile'];
+            if (isset($file) && isset($newFile) && $file != null && $newFile != null) {
+                $email = $_COOKIE['login'];
+                $path = self::getPath($email);
+                $fullPath = $path['path'] . DS . $file;
+                $filePath = APP . DS . 'Repositories' . DS . $path['path'] . DS . $file;
+                $newFilePath = APP . DS . 'Repositories' . DS . $path['path'] . DS . $newFile;
+                if (file_exists($filePath)) {
+                    $id = self::getId($email, $fullPath);
+                    if (isset($id[0]) && $id[0] != null) {
+                        $stm = Db::getInstance()->prepare(
+                            'UPDATE cloud_storage.userpaths
+                            SET fullpath = :fullpath
+                            WHERE id = :id'
+                        );
+                        $stm->bindValue(':id', $id[0]);
+                        $stm->bindValue(':fullpath', $path['path'] . DS . $newFile);
+                        if ($stm->execute()) {
+                            rename($filePath, $newFilePath);
+                            return $newFile;
+                        } else {
+                            die('Файл не удалось переименовать в бд');
+                        }
+                    } else {
+                        die ('Файл не найден в бд');
+                    }
+                } else {
+                    die ('Файл не найден');
+                }
+            } else {
+                die('Заполните все поля запроса правильно');
+            }
+        } else {
+            echo('Вы не авторизованы');
+        }
+        return false;
+    }
 }

@@ -27,7 +27,7 @@ class File
 
     #[NoReturn] public function rename(): void
     {
-        Response::send('filesRename');
+        Response::send(FileService::renameFile());
     }
 
     #[NoReturn] public function removeId($id = null): void
