@@ -15,7 +15,7 @@ class File
 
     #[NoReturn] public function getId($id = null): void
     {
-        Response::send('filesGetId', $id);
+        Response::send(FileService::getInfoFile($id), $id);
     }
 
     #[NoReturn] public function add(): void
@@ -23,7 +23,6 @@ class File
         if (isset($_FILES['file'])) {
             FileService::add($_FILES['file']);
         }
-        //Response::send('filesAdd');
     }
 
     #[NoReturn] public function rename(): void
@@ -33,7 +32,7 @@ class File
 
     #[NoReturn] public function removeId($id = null): void
     {
-        Response::send('filesRemoveId', $id);
+        Response::send(FileService::deleteRow($id), $id);
     }
 
     #[NoReturn] public function shareId($id = null): void
