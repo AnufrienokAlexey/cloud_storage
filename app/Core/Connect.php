@@ -50,8 +50,10 @@ class Connect extends Db
             Db::getInstance()->query("USE $dbname");
             $stm = Db::getInstance()->prepare(
                 "CREATE TABLE cloud_storage.userpaths (
-                email VARCHAR(255) NOT NULL UNIQUE ,
-                path varchar(255) NOT NULL
+                id INTEGER AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) NOT NULL ,
+                path varchar(255) NOT NULL,
+                fullpath varchar(255) NOT NULL
                 )
                 ENGINE=InnoDB
                 DEFAULT CHARSET=utf8mb3
