@@ -9,41 +9,45 @@ class FileService
 {
     public static function add($file): void
     {
-        //if (UserService::isAuth()) {
-        if ($_FILES["file"]["error"] == 0) {
-            $tmp_name = $_FILES["file"]["tmp_name"];
-            $name = basename($_FILES["file"]["name"]);
-            $email = $_COOKIE['login'];
-            $path = self::getPath($email);
-            $uploadDir = null;
-            if ($path == null) {
-                $path = uniqid();
-                $fullPath = $path . '/' . $name;
-                self::addRow($email, $path, $fullPath);
-                $uploadDir = APP . DS . 'Repositories' . DS . $path;
-            } else {
-                $path = self::getPath($email);
-                $fullPath = $path['path'] . '/' . $name;
-                $id = self::getId($email, $fullPath);
-                dump($id);
-                if (count($id) > 0) {
-                    self::deleteRow($id[0]);
+        if (UserService::isAuth()) {
+            if ($_FILES["file"]["error"] == 0) {
+                $tmp_name = $_FILES["file"]["tmp_name"];
+                $name = basename($_FILES["file"]["name"]);
+                if (isset($_COOKIE['login'])) {
+                    $email = $_COOKIE['login'];
+                } else {
+                    die('Вы не авторизованы');
                 }
-                self::addRow($email, $path['path'], $fullPath);
-                $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
-            }
+                $path = self::getPath($email);
+                $uploadDir = null;
+                if ($path == null) {
+                    $path = uniqid();
+                    $fullPath = $path . '/' . $name;
+                    self::addRow($email, $path, $fullPath);
+                    $uploadDir = APP . DS . 'Repositories' . DS . $path;
+                } else {
+                    $path = self::getPath($email);
+                    $fullPath = $path['path'] . '/' . $name;
+                    $id = self::getId($email, $fullPath);
+                    if (count($id) > 0) {
+                        self::deleteRow($id[0]);
+                    }
+                    self::addRow($email, $path['path'], $fullPath);
+                    $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+                }
 
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
 
-            move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
+                move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
+                echo 'Файл ' . $name . ' успешно добавлен';
+            } else {
+                echo 'Файл содержит ошибки';
+            }
         } else {
-            echo 'Файл содержит ошибки';
+            echo('Вы не авторизованы');
         }
-//        } else {
-//            echo('Вы не авторизованы');
-//        }
     }
 
     public static function deleteRow($id): void
