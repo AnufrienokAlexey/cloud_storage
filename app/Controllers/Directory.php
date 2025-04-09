@@ -20,16 +20,17 @@ class Directory
 
     #[NoReturn] public function rename(): void
     {
-        Response::send('directoriesRename');
+        Response::send(DirectoryService::renameDirectory());
     }
 
     #[NoReturn] public function getId($id = null): void
     {
-        Response::send('directoriesGetId', $id);
+        Response::send(DirectoryService::listFilesById($id), $id);
     }
 
     #[NoReturn] public function deleteId($id = null): void
     {
-        Response::send('directoriesDeleteId', $id);
+        Response::send(DirectoryService::deleteDirectory($id));
+//        Response::send('directoriesDeleteId', $id);
     }
 }

@@ -19,25 +19,43 @@ class FileService
                 if ($path == null) {
                     $path = uniqid();
                     $fullPath = $path . '/' . $name;
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $fullPath = $path . DS . $_POST['dir'] . DS . $name;
+                    }
+                    dump($fullPath);
                     self::addRow($email, $path, $fullPath);
                     $uploadDir = APP . DS . 'Repositories' . DS . $path;
+
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path . DS . $_POST['dir'];
+                    }
                 } else {
                     $path = self::getPath($email);
-                    $fullPath = $path['path'] . '/' . $name;
+                    $fullPath = $path['path'] . DS . $name;
+                    
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $fullPath = $path['path'] . DS . $_POST['dir'] . DS . $name;
+                    }
+
                     $id = self::getIdFullPath($email, $fullPath);
                     if (isset($id['id']) and $id['id'] > 0) {
                         self::updateRow($id['id'], $fullPath);
                     } else {
                         self::addRow($email, $path['path'], $fullPath);
                     }
-                    $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path['path'] . DS . $_POST['dir'];
+                    } else {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+                    }
                 }
 
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
                 }
 
-                move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
+                move_uploaded_file($tmp_name, "$uploadDir" . DS . $name);
                 echo 'Файл ' . $name . ' успешно добавлен';
             } else {
                 echo 'Файл содержит ошибки';
@@ -164,7 +182,7 @@ class FileService
         return null;
     }
 
-    private static function getFullPathById($id, $email)
+    public static function getFullPathById($id, $email)
     {
         $stm = Db::getInstance()->prepare(
             'SELECT fullpath FROM cloud_storage.userpaths 
