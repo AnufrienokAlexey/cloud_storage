@@ -122,4 +122,9 @@ class User
             }
         }
     }
+
+    #[NoReturn] public function search($email = null): void
+    {
+        Response::send(UserService::search($email), $email);
+    }
 }

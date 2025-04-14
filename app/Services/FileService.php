@@ -32,7 +32,7 @@ class FileService
                 } else {
                     $path = self::getPath($email);
                     $fullPath = $path['path'] . DS . $name;
-                    
+
                     if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
                         $fullPath = $path['path'] . DS . $_POST['dir'] . DS . $name;
                     }
@@ -236,5 +236,51 @@ class FileService
             echo('Вы не авторизованы');
         }
         return false;
+    }
+
+    public static function shareId($id)
+    {
+    }
+
+    public static function shareIdUserId(mixed $id, mixed $userId)
+    {
+        if (UserService::isAuth()) {
+            $input = file_get_contents('php://input');
+            $request = json_decode($input, true);
+
+            if (isset($request['id']) && isset($request['user_id']) && $request['id'] != null && $request['user_id'] != null) {
+                $fileId = $request['id'];
+                $userId = $request['user_id'];
+                $email = $_COOKIE['login'];
+                $path = self::getPath($email);
+                $fullPath = self::getFullPathById($fileId, $email);
+                $filePath = APP . DS . 'Repositories' . DS . $path['path'] . DS . $fullPath;
+                if (file_exists($filePath)) {
+                    $stm = Db::getInstance()->prepare(
+                        'UPDATE cloud_storage.userpaths 
+                        SET shared_emails = :shared_email
+                        WHERE email = :email'
+                    );
+                    $user = UserService::search($email);
+                    $sharedEmail = UserService::get($userId);
+                    $stm->bindValue(':email', $user[0]['email']);
+                    $stm->bindValue(':shared_email', $sharedEmail[0]['email']);
+                    if ($stm->execute()) {
+                        return "Пользователю с id = $userId разрешен доступ к вашему файлу с id = $fileId";
+                    };
+                } else {
+                    die ('Файл не найден');
+                }
+            } else {
+                die('Заполните все поля запроса правильно');
+            }
+        } else {
+            echo('Вы не авторизованы');
+        }
+        return false;
+    }
+
+    public static function deleteIdUserId(mixed $id, mixed $userId)
+    {
     }
 }

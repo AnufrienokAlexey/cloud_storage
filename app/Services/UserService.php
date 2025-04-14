@@ -113,4 +113,14 @@ class UserService
         $stm->bindValue(':email', $email);
         return $stm->execute();
     }
+
+    public static function search($email): array|null
+    {
+        $stm = Db::getInstance()->prepare(
+            'SELECT id, username, email, birthdate, role FROM cloud_storage.users WHERE email = :email'
+        );
+        $stm->bindValue(':email', $email);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
 }

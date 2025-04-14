@@ -37,17 +37,17 @@ class File
 
     #[NoReturn] public function shareId($id = null): void
     {
-        Response::send('filesShareId', $id);
+        Response::send(FileService::shareId($id), $id);
     }
 
     #[NoReturn] public function shareIdUserId($id = null, $userId = null): void
     {
-        Response::send('filesShareIdUserId', $id, $userId);
+        Response::send(FileService::shareIdUserId($id, $userId), $id, $userId);
     }
 
     #[NoReturn] public function deleteIdUserId($id = null, $userId = null): void
     {
-        Response::send('filesDeleteIdUserId', $id, $userId);
+        Response::send(FileService::deleteIdUserId($id, $userId), $id, $userId);
     }
 
 }
