@@ -53,8 +53,8 @@ class Connect extends Db
                 id INTEGER AUTO_INCREMENT PRIMARY KEY,
                 email VARCHAR(255) NOT NULL ,
                 path varchar(255) NOT NULL,
-                fullpath varchar(255) NOT NULL
-                )
+                fullpath varchar(255) NOT NULL,
+                shared_emails TEXT)
                 ENGINE=InnoDB
                 DEFAULT CHARSET=utf8mb3
                 COLLATE=utf8mb3_general_ci;"

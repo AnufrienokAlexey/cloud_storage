@@ -21,6 +21,9 @@ return [
     '/users/get/{id}' => [
         ['GET', ['User', 'get']],
     ],
+    '/users/search/{email}' => [
+        ['GET', ['User', 'search']],
+    ],
     '/admin/users/list' => [
         ['GET', ['Admin', 'list']],
     ],
@@ -63,7 +66,7 @@ return [
     '/files/share/{id}' => [
         ['GET', ['File', 'shareId']],
     ],
-    '/files/share/{id}/{user_id}' => [
+    '/files/share' => [
         ['PUT', ['File', 'shareIdUserId']],
         ['DELETE', ['File', 'deleteIdUserId']],
     ],

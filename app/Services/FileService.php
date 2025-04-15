@@ -19,25 +19,43 @@ class FileService
                 if ($path == null) {
                     $path = uniqid();
                     $fullPath = $path . '/' . $name;
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $fullPath = $path . DS . $_POST['dir'] . DS . $name;
+                    }
+                    dump($fullPath);
                     self::addRow($email, $path, $fullPath);
                     $uploadDir = APP . DS . 'Repositories' . DS . $path;
+
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path . DS . $_POST['dir'];
+                    }
                 } else {
                     $path = self::getPath($email);
-                    $fullPath = $path['path'] . '/' . $name;
+                    $fullPath = $path['path'] . DS . $name;
+
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $fullPath = $path['path'] . DS . $_POST['dir'] . DS . $name;
+                    }
+
                     $id = self::getIdFullPath($email, $fullPath);
-                    if (isset($id['id']) and $id['id'] >= 0) {
+                    if (isset($id['id']) and $id['id'] > 0) {
                         self::updateRow($id['id'], $fullPath);
                     } else {
                         self::addRow($email, $path['path'], $fullPath);
                     }
-                    $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+
+                    if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path['path'] . DS . $_POST['dir'];
+                    } else {
+                        $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+                    }
                 }
 
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
                 }
 
-                move_uploaded_file($tmp_name, "$uploadDir" . '/' . $name);
+                move_uploaded_file($tmp_name, "$uploadDir" . DS . $name);
                 echo 'Файл ' . $name . ' успешно добавлен';
             } else {
                 echo 'Файл содержит ошибки';
@@ -164,7 +182,7 @@ class FileService
         return null;
     }
 
-    private static function getFullPathById($id, $email)
+    public static function getFullPathById($id, $email)
     {
         $stm = Db::getInstance()->prepare(
             'SELECT fullpath FROM cloud_storage.userpaths 
@@ -211,6 +229,95 @@ class FileService
                 } else {
                     die ('Файл не найден');
                 }
+            } else {
+                die('Заполните все поля запроса правильно');
+            }
+        } else {
+            echo('Вы не авторизованы');
+        }
+        return false;
+    }
+
+    public static function shareId($id): string|null|array
+    {
+        if (UserService::isAuth()) {
+            $stm = Db::getInstance()->prepare(
+                'SELECT shared_emails FROM cloud_storage.userpaths
+                WHERE id = :id');
+            $stm->bindValue(':id', $id);
+            if ($stm->execute()) {
+                return $stm->fetch();
+            }
+        }
+        return 'Вы не авторизованы';
+    }
+
+    public static function shareIdUserId(mixed $id, mixed $userId)
+    {
+        if (UserService::isAuth()) {
+            $input = file_get_contents('php://input');
+            $request = json_decode($input, true);
+
+            if (isset($request['id']) && isset($request['user_id']) && $request['id'] != null && $request['user_id'] != null) {
+                $fileId = $request['id'];
+                $userId = $request['user_id'];
+                $email = $_COOKIE['login'];
+                $path = self::getPath($email);
+                $fullPath = self::getFullPathById($fileId, $email);
+                $filePath = APP . DS . 'Repositories' . DS . $path['path'] . DS . $fullPath;
+                if (file_exists($filePath)) {
+                    $user = UserService::search($email);
+                    $pdo = Db::getInstance()->prepare(
+                        'SELECT shared_emails FROM cloud_storage.userpaths
+                        WHERE email = :email');
+                    $pdo->bindValue(':email', $email);
+                    if ($pdo->execute()) {
+                        $result = $pdo->fetchAll(PDO::FETCH_COLUMN);
+                        if ($user[0]['email'] !== $result[0]) {
+                            $stm = Db::getInstance()->prepare(
+                                'UPDATE cloud_storage.userpaths 
+                                SET shared_emails = :shared_email
+                                WHERE email = :email'
+                            );
+                            $sharedEmail = UserService::get($userId);
+                            $stm->bindValue(':email', $user[0]['email']);
+                            $stm->bindValue(':shared_email', $sharedEmail[0]['email']);
+                            if ($stm->execute()) {
+                                return "Пользователю с id = $userId разрешен доступ к вашему файлу с id = $fileId";
+                            };
+                        }
+                    }
+                } else {
+                    die ('Файл не найден');
+                }
+            } else {
+                die('Заполните все поля запроса правильно');
+            }
+        } else {
+            echo('Вы не авторизованы');
+        }
+        return false;
+    }
+
+    public static function deleteIdUserId(mixed $id, mixed $userId)
+    {
+        if (UserService::isAuth()) {
+            $input = file_get_contents('php://input');
+            $request = json_decode($input, true);
+
+            if (isset($request['id']) && isset($request['user_id']) && $request['id'] != null && $request['user_id'] != null) {
+                $fileId = $request['id'];
+                $userId = $request['user_id'];
+                $email = $_COOKIE['login'];
+
+                $stm = Db::getInstance()->prepare(
+                    'UPDATE cloud_storage.userpaths
+                    SET shared_emails = null
+                    WHERE email = :email');
+                $stm->bindValue(':email', $email);
+                if ($stm->execute()) {
+                    return "Пользователю с id = $userId удален доступ к вашему файлу с id = $fileId";
+                };
             } else {
                 die('Заполните все поля запроса правильно');
             }

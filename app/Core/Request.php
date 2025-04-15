@@ -4,7 +4,7 @@ namespace app\Core;
 
 class Request
 {
-    public static ?int $id = null;
+    public static mixed $id = null;
     public static ?int $userId = null;
     public static ?string $configRoute = null;
 
@@ -20,7 +20,7 @@ class Request
         return explode('/', self::getUri());
     }
 
-    public static function getId(): ?int
+    public static function getId(): mixed
     {
         return self::$id;
     }
@@ -47,6 +47,11 @@ class Request
                 $uriStr = implode('/', $uriArray);
                 self::$configRoute = "$uriStr/{id}/{user_id}";
             }
+        }
+        if (filter_var($lastElement, FILTER_VALIDATE_EMAIL)) {
+            self::$id = $lastElement;
+            $uriStr = implode('/', $uriArray);
+            self::$configRoute = "$uriStr/{email}";
         }
     }
 
