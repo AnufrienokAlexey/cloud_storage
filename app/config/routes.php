@@ -66,7 +66,7 @@ return [
     '/files/share/{id}' => [
         ['GET', ['File', 'shareId']],
     ],
-    '/files/share/{id}/{user_id}' => [
+    '/files/share' => [
         ['PUT', ['File', 'shareIdUserId']],
         ['DELETE', ['File', 'deleteIdUserId']],
     ],
