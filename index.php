@@ -10,7 +10,7 @@ use app\Core\Router;
 
 $microTime = microtime(true);
 
-//require_once __DIR__ . '/app/config/config.php';
+require_once __DIR__ . '/app/config/config.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 define("CONFIG", require(__DIR__ . '/app/config/config.php'));
