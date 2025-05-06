@@ -2,11 +2,11 @@
 
 return [
     'mysql' => [
-        'host' => 'localhost',
-        'dbname' => 'cloud_storage',
-        'charset' => 'utf8mb4',
-        'username' => 'user',
-        'password' => 'user',
+        'host'     => getenv('DB_HOST'),
+        'dbname'   => getenv('DB_NAME'),
+        'charset'  => getenv('DB_CHARSET'),
+        'username' => getenv('DB_USER'),
+        'password' => getenv('DB_PASS'),
     ],
     'user_table' => 'users',
 ];
