@@ -3,32 +3,23 @@
 namespace app\Services;
 
 use app\Core\Db;
+use app\Models\UsersModel;
 
 class AdminService
 {
     public static function isAdmin(): bool
     {
         if (isset ($_COOKIE['login'])) {
-            $stm = Db::getInstance()->prepare(
-                'SELECT * FROM cloud_storage.users WHERE email = :email AND role = :role'
-            );
-            $stm->bindValue(':email', $_COOKIE['login']);
-            $stm->bindValue(':role', 'admin');
-            $stm->execute();
-            if ($stm->rowCount() == 1) {
+            if (UsersModel::isAdmin($_COOKIE['login'], 'admin') == 1) {
                 return true;
             }
         }
         return false;
     }
 
-    public static function list(): array|null
+    public static function list(): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT id, username FROM cloud_storage.users'
-        );
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::list();
     }
 
     public static function get($id): array|null
