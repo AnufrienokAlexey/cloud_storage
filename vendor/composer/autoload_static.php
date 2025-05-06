@@ -17,6 +17,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         array (
             'app\\' => 4,
         ),
+        'T' => 
+        array (
+            'Test\\PhpDevCommunity\\' => 21,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -25,6 +29,7 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'P' => 
         array (
             'Psr\\Container\\' => 14,
+            'PhpDevCommunity\\' => 16,
         ),
         'F' => 
         array (
@@ -37,6 +42,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+        'Test\\PhpDevCommunity\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpdevcommunity/php-dotenv/tests',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -48,6 +57,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'PhpDevCommunity\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpdevcommunity/php-dotenv/src',
         ),
         'Faker\\' => 
         array (

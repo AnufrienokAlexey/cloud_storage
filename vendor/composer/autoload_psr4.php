@@ -7,8 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'app\\' => array($baseDir . '/app'),
+    'Test\\PhpDevCommunity\\' => array($vendorDir . '/phpdevcommunity/php-dotenv/tests'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'PhpDevCommunity\\' => array($vendorDir . '/phpdevcommunity/php-dotenv/src'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
 );
