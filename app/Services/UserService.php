@@ -4,84 +4,42 @@ namespace app\Services;
 
 use app\Core\Connect;
 use app\Core\Db;
+use app\Models\UsersModel;
 
 class UserService
 {
-    public static function list(): array|null
+    public static function list(): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT id, username, birthdate FROM cloud_storage.users'
-        );
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::list();
     }
 
-    public static function update($id, $username, $email, $password, $birthdate, $role): array|null
+    public static function update($id, $username, $email, $password, $birthdate, $role): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'UPDATE cloud_storage.users
-                    SET username = :username, email = :email, password = :password, birthdate = :birthdate, role = :role
-                    WHERE id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->bindValue(':username', $username);
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':password', $password);
-        $stm->bindValue(':birthdate', $birthdate);
-        $stm->bindValue(':role', $role);
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::update($id, $username, $email, $password, $birthdate, $role);
     }
 
-    public static function get($id): array|null
+    public static function get($id): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT * FROM cloud_storage.users WHERE id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::get($id);
     }
 
-    public static function auth($email, $password): string|null
+    public static function auth($email, $password): string|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT email FROM cloud_storage.users WHERE email = :email AND password = :password'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':password', $password);
-        $stm->execute();
-        if ($stm->rowCount() > 0) {
-            $user = $stm->fetch();
-            return $user['email'];
-        }
-        return null;
+        return UsersModel::auth($email, $password);
     }
 
     public static function isAuth(): bool
     {
-        if (isset ($_COOKIE['login'])) {
-            $stm = Db::getInstance()->prepare(
-                'SELECT * FROM cloud_storage.users WHERE email = :email'
-            );
-            $stm->bindValue(':email', $_COOKIE['login']);
-            $stm->execute();
-            if ($stm->rowCount() == 1) {
-                return true;
-            }
+        if (isset ($_COOKIE['login']) && (UsersModel::isAuth() == 1)) {
+            return true;
         }
         return false;
     }
 
-    public static function resetPassword($email): string|null
+    public static function resetPassword($email): string|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT email FROM cloud_storage.users WHERE email = :email'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->execute();
-        if ($stm->rowCount() > 0) {
-            $user = $stm->fetch();
+        $user = UsersModel::resetPassword($email);
+        if (isset($user['email'])) {
             return $user['email'];
         }
         return null;
@@ -90,14 +48,7 @@ class UserService
     public static function newPassword($password, $resetKey): bool
     {
         if (Connect::getColumn('users', 'reset_key')) {
-            $stm = Db::getInstance()->prepare(
-                'UPDATE cloud_storage.users
-                SET password = :password WHERE (reset_key) = (:reset_key)'
-            );
-            $stm->bindValue(':reset_key', $resetKey);
-            $stm->bindValue(':password', $password);
-            $stm->execute();
-            return $stm->execute();
+            return UsersModel::newPassword($password, $resetKey);
         } else {
             echo 'Ссылка более не действительна! Возможно Вы уже изменили пароль ранее.' . PHP_EOL;
         }
@@ -106,22 +57,11 @@ class UserService
 
     public static function addResetKey($resetKey, $email): bool
     {
-        $stm = Db::getInstance()->prepare(
-            'UPDATE cloud_storage.users
-            SET reset_key = :reset_key WHERE email = :email'
-        );
-        $stm->bindValue(':reset_key', $resetKey);
-        $stm->bindValue(':email', $email);
-        return $stm->execute();
+        return UsersModel::addResetKey($resetKey, $email);
     }
 
-    public static function search($email): array|null
+    public static function search($email): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT id, username, email, birthdate, role FROM cloud_storage.users WHERE email = :email'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::search($email);
     }
 }
