@@ -23,7 +23,6 @@ class FileService
                     if (isset($_POST['dir']) && ($_POST['dir'] != '')) {
                         $fullPath = $path . DS . $_POST['dir'] . DS . $name;
                     }
-                    dump($fullPath);
                     self::addRow($email, $path, $fullPath);
                     $uploadDir = APP . DS . 'Repositories' . DS . $path;
 
@@ -130,7 +129,13 @@ class FileService
         if (UserService::isAuth()) {
             $email = $_COOKIE['login'];
             $path = self::getPath($email);
-            $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+            dump($path);
+            if ($path != null) {
+                $uploadDir = APP . DS . 'Repositories' . DS . $path['path'];
+            } else {
+                die ("Нет записи о файле в бд");
+            }
+
             return array_diff(scandir($uploadDir), array('..', '.'));
         } else {
             echo('Вы не авторизованы');

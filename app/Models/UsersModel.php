@@ -125,7 +125,7 @@ class UsersModel
         return false;
     }
 
-    public static function resetPassword($email): string|null|bool
+    public static function resetPassword($email): string|null|bool|array
     {
         try {
             $stm = Db::getInstance()->prepare(

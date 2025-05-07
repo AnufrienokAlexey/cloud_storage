@@ -53,7 +53,9 @@ class User
             $email = UserService::auth($_POST['login'], $password);
             if ($email !== null) {
                 setcookie('login', $email, time() + 3600);
-                session_start();
+                session_start([
+                    'cookie_lifetime' => 86400,
+                ]);
                 $_SESSION['login'] = $email;
                 echo("Вы успешно авторизовались как $_POST[login]");
             } else {
@@ -65,8 +67,10 @@ class User
     public function logout(): void
     {
         setcookie('login', '', time() - 3600);
-        session_destroy();
-        header('Location: /');
+        if (isset($_SESSION['login'])) {
+            session_destroy();
+        }
+        //header('Location: /');
     }
 
     public function resetPassword(): void
