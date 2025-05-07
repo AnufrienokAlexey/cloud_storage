@@ -3,6 +3,7 @@
 namespace app\Services;
 
 use app\Core\Db;
+use app\Models\UserPathsModel;
 use PDO;
 
 class DirectoryService
@@ -20,14 +21,7 @@ class DirectoryService
                 return 'Такая директория уже была добавлена ранее';
             }
             if (!file_exists($newPath)) {
-                $stm = Db::getInstance()->prepare(
-                    'INSERT INTO cloud_storage.userpaths (email, path, fullpath)
-                    VALUE (:email, :path, :fullpath)'
-                );
-                $stm->bindValue(':email', $email);
-                $stm->bindValue(':path', $path);
-                $stm->bindValue(':fullpath', $fullPath);
-                if ($stm->execute()) {
+                if (UserPathsModel::addDirectory($email, $path, $fullPath)) {
                     mkdir($newPath, 0755, true);
                     if (file_exists($newPath)) {
                         return "Директория $directory успешно добавлена";
@@ -41,14 +35,9 @@ class DirectoryService
         return 'Вы не авторизованы';
     }
 
-    public static function getPaths($email): array|null
+    public static function getPaths($email): bool|null|array|string
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT path FROM cloud_storage.userpaths WHERE email = :email'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->execute();
-        return $stm->fetchAll(PDO::FETCH_COLUMN);
+        return UserPathsModel::getPath($email);
     }
 
     public static function deleteDirectory($id): string
@@ -60,12 +49,7 @@ class DirectoryService
                 $fullPath['fullpath'] != '' &&
                 file_exists(APP . DS . 'Repositories' . DS . $fullPath['fullpath'])) {
                 if (rmdir(APP . DS . 'Repositories' . DS . $fullPath['fullpath'])) {
-                    $stm = Db::getInstance()->prepare(
-                        'DELETE FROM cloud_storage.userpaths WHERE id = :id AND email = :email'
-                    );
-                    $stm->bindValue(':id', $id);
-                    $stm->bindValue(':email', $email);
-                    if ($stm->execute()) {
+                    if (UserPathsModel::deleteDirectory($id, $email)) {
                         return "Директория $fullPath[fullpath] успешно удалена.";
                     };
                 } else {
@@ -95,14 +79,7 @@ class DirectoryService
                 if (file_exists($filePath)) {
                     $id = FileService::getId($email, $fullPath);
                     if (isset($id[0]) && $id[0] != null) {
-                        $stm = Db::getInstance()->prepare(
-                            'UPDATE cloud_storage.userpaths
-                            SET fullpath = :fullpath
-                            WHERE id = :id'
-                        );
-                        $stm->bindValue(':id', $id[0]);
-                        $stm->bindValue(':fullpath', $path['path'] . DS . $newFile);
-                        if ($stm->execute()) {
+                        if (UserPathsModel::renameDirectory($id[0], $path['path'] . DS . $newFile)) {
                             rename($filePath, $newFilePath);
                             return $newFile;
                         } else {

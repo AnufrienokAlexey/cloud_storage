@@ -218,4 +218,68 @@ class UserPathsModel
         }
         return false;
     }
+
+    public static function addDirectory($email, $path, $fullPath): bool
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'INSERT INTO cloud_storage.userpaths (email, path, fullpath)
+                    VALUE (:email, :path, :fullpath)'
+            );
+            $stm->bindValue(':email', $email);
+            $stm->bindValue(':path', $path);
+            $stm->bindValue(':fullpath', $fullPath);
+            return $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
+
+    public static function getPaths($email): bool|null|array|string
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'SELECT path FROM cloud_storage.userpaths WHERE email = :email'
+            );
+            $stm->bindValue(':email', $email);
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
+
+    public static function deleteDirectory($id, $email): bool
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'DELETE FROM cloud_storage.userpaths WHERE id = :id AND email = :email'
+            );
+            $stm->bindValue(':id', $id);
+            $stm->bindValue(':email', $email);
+            return $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
+
+    public static function renameDirectory($id, $path): bool
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'UPDATE cloud_storage.userpaths
+                            SET fullpath = :fullpath
+                            WHERE id = :id'
+            );
+            $stm->bindValue(':id', $id);
+            $stm->bindValue(':fullpath', $path);
+            return $stm->execute();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
 }
