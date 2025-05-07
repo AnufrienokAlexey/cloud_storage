@@ -35,4 +35,35 @@ class UsersModel
         }
         return false;
     }
+
+    public static function get($id): array|null|bool
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'SELECT * FROM cloud_storage.users WHERE id = :id'
+            );
+            $stm->bindValue(':id', $id);
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
+
+    public static function delete($id): bool
+    {
+        try {
+            $stm = Db::getInstance()->prepare(
+                'DELETE FROM cloud_storage.users WHERE id = :id'
+            );
+            $stm->bindValue(':id', $id);
+            if ($stm->execute()) {
+                return true;
+            }
+        } catch (\PDOException $e) {
+            error_log($e->getMessage());
+        }
+        return false;
+    }
 }

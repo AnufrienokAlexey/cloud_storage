@@ -22,27 +22,20 @@ class AdminService
         return UsersModel::list();
     }
 
-    public static function get($id): array|null
+    public static function get($id): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT * FROM cloud_storage.users WHERE id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->execute();
-        return $stm->fetchAll();
+        return UsersModel::get($id);
     }
 
-    public static function delete($id): array|null
+    public static function delete($id): bool
     {
-        $stm = Db::getInstance()->prepare(
-            'DELETE FROM cloud_storage.users WHERE id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->execute();
-        return $stm->fetchAll();
+        if(UsersModel::delete($id)) {
+            return "Пользователь с id = $id удален";
+        }
+        return "Не получилось удалить пользователя с id = $id";
     }
 
-    public static function update($id): array|null
+    public static function update($id): array|null|bool
     {
         $input = file_get_contents('php://input');
         $request = json_decode($input, true);
