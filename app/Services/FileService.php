@@ -3,6 +3,7 @@
 namespace app\Services;
 
 use app\Core\Db;
+use app\Models\UserPathsModel;
 use PDO;
 
 class FileService
@@ -39,7 +40,9 @@ class FileService
 
                     $id = self::getIdFullPath($email, $fullPath);
                     if (isset($id['id']) and $id['id'] > 0) {
-                        self::updateRow($id['id'], $fullPath);
+                        if(self::updateRow($id['id'], $fullPath)) {
+                            echo 'Данные успешно обновлены';
+                        }
                     } else {
                         self::addRow($email, $path['path'], $fullPath);
                     }
@@ -65,16 +68,12 @@ class FileService
         }
     }
 
-    public static function updateRow($id, $fullPath): void
+    public static function updateRow($id, $fullPath): bool
     {
-        $stm = Db::getInstance()->prepare(
-            'UPDATE cloud_storage.userpaths 
-            SET fullpath = :fullPath 
-            WHERE id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->bindValue(':fullPath', $fullPath);
-        $stm->execute();
+        if (UserPathsModel::updateRow($id, $fullPath)) {
+            return true;
+        }
+        return false;
     }
 
     public static function deleteRow($id): bool
@@ -86,12 +85,10 @@ class FileService
                 $fullPath['fullpath'] != '' &&
                 file_exists(APP . DS . 'Repositories' . DS . $fullPath['fullpath'])) {
                 if (unlink(APP . DS . 'Repositories' . DS . $fullPath['fullpath'])) {
-                    $stm = Db::getInstance()->prepare(
-                        'DELETE FROM cloud_storage.userpaths WHERE id = :id AND email = :email'
-                    );
-                    $stm->bindValue(':id', $id);
-                    $stm->bindValue(':email', $email);
-                    return $stm->execute();
+                    if (UserPathsModel::deleteRow($id, $email)) {
+                        echo 'Данные успешно удалены из бд';
+                        return true;
+                    }
                 } else {
                     die('Файл удалить не удалось');
                 }
@@ -101,51 +98,31 @@ class FileService
         } else {
             die('Вы не авторизованы');
         }
+        return false;
     }
 
-    public static function getId($email, $fullPath): array
+    public static function getId($email, $fullPath): array|null|bool
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT id FROM cloud_storage.userpaths WHERE email = :email AND fullpath = :fullpath'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':fullpath', $fullPath);
-        $stm->execute();
-        return $stm->fetchAll(PDO::FETCH_COLUMN);
+        return UserPathsModel::getId($email, $fullPath);
     }
 
     public static function getPath($email): array|null|string
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT path FROM cloud_storage.userpaths WHERE email = :email'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->execute();
-        return $stm->fetch();
+        return UserPathsModel::getPath($email);
     }
 
     public static function getIdFullPath($email, $fullPath): array|null|string
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT id FROM cloud_storage.userpaths 
-                WHERE email = :email AND  fullpath = :fullpath'
-        );
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':fullpath', $fullPath);
-        $stm->execute();
-        return $stm->fetch();
+        return UserPathsModel::getIdFullPath($email, $fullPath);
     }
 
     public static function addRow($email, $path, $fullPath): void
     {
-        $stm = Db::getInstance()->prepare(
-            "INSERT INTO cloud_storage.userpaths (email, path, fullpath) 
-            VALUES (:email,:path, :fullPath)"
-        );
-        $stm->bindValue(':email', $email);
-        $stm->bindValue(':path', $path);
-        $stm->bindValue(':fullPath', $fullPath);
-        $stm->execute();
+        if (UserPathsModel::addRow($email, $path, $fullPath)) {
+            echo "Данные успешно добавлены";
+        } else {
+            echo "Не удалось добавить данные";
+        }
     }
 
     public static function list(): array|null
@@ -165,15 +142,8 @@ class FileService
     {
         if (UserService::isAuth()) {
             $email = $_COOKIE['login'];
-            $stm = Db::getInstance()->prepare(
-                'SELECT fullpath FROM cloud_storage.userpaths 
-                WHERE email = :email AND  id = :id'
-            );
-            $stm->bindValue(':email', $email);
-            $stm->bindValue(':id', $id);
-            $stm->execute();
-            $id = $stm->fetch();
-            if ($id['fullpath']) {
+            $id = UserPathsModel::getInfoFile($id, $email);
+            if (isset($id['fullpath'])) {
                 return $id['fullpath'];
             }
         } else {
@@ -182,16 +152,9 @@ class FileService
         return null;
     }
 
-    public static function getFullPathById($id, $email)
+    public static function getFullPathById($id, $email): bool|string|null
     {
-        $stm = Db::getInstance()->prepare(
-            'SELECT fullpath FROM cloud_storage.userpaths 
-                WHERE email = :email AND  id = :id'
-        );
-        $stm->bindValue(':id', $id);
-        $stm->bindValue(':email', $email);
-        $stm->execute();
-        return $stm->fetch();
+        return UserPathsModel::getFullPathById($id, $email);
     }
 
     public static function renameFile(): string|false
@@ -210,14 +173,7 @@ class FileService
                 if (file_exists($filePath)) {
                     $id = self::getId($email, $fullPath);
                     if (isset($id[0]) && $id[0] != null) {
-                        $stm = Db::getInstance()->prepare(
-                            'UPDATE cloud_storage.userpaths
-                            SET fullpath = :fullpath
-                            WHERE id = :id'
-                        );
-                        $stm->bindValue(':id', $id[0]);
-                        $stm->bindValue(':fullpath', $path['path'] . DS . $newFile);
-                        if ($stm->execute()) {
+                        if (UserPathsModel::renameFile($id[0], $path['path'] . DS . $newFile)) {
                             rename($filePath, $newFilePath);
                             return $newFile;
                         } else {
@@ -241,13 +197,7 @@ class FileService
     public static function shareId($id): string|null|array
     {
         if (UserService::isAuth()) {
-            $stm = Db::getInstance()->prepare(
-                'SELECT shared_emails FROM cloud_storage.userpaths
-                WHERE id = :id');
-            $stm->bindValue(':id', $id);
-            if ($stm->execute()) {
-                return $stm->fetch();
-            }
+            return UserPathsModel::shareId($id);
         }
         return 'Вы не авторизованы';
     }
@@ -267,26 +217,13 @@ class FileService
                 $filePath = APP . DS . 'Repositories' . DS . $path['path'] . DS . $fullPath;
                 if (file_exists($filePath)) {
                     $user = UserService::search($email);
-                    $pdo = Db::getInstance()->prepare(
-                        'SELECT shared_emails FROM cloud_storage.userpaths
-                        WHERE email = :email');
-                    $pdo->bindValue(':email', $email);
-                    if ($pdo->execute()) {
-                        $result = $pdo->fetchAll(PDO::FETCH_COLUMN);
+                        $result = UserPathsModel::shareIdUserIdPdo($email);
                         if ($user[0]['email'] !== $result[0]) {
-                            $stm = Db::getInstance()->prepare(
-                                'UPDATE cloud_storage.userpaths 
-                                SET shared_emails = :shared_email
-                                WHERE email = :email'
-                            );
                             $sharedEmail = UserService::get($userId);
-                            $stm->bindValue(':email', $user[0]['email']);
-                            $stm->bindValue(':shared_email', $sharedEmail[0]['email']);
-                            if ($stm->execute()) {
+                            if (UserPathsModel::shareIdUserId($user[0]['email'], $sharedEmail[0]['email'])) {
                                 return "Пользователю с id = $userId разрешен доступ к вашему файлу с id = $fileId";
                             };
                         }
-                    }
                 } else {
                     die ('Файл не найден');
                 }
@@ -309,13 +246,7 @@ class FileService
                 $fileId = $request['id'];
                 $userId = $request['user_id'];
                 $email = $_COOKIE['login'];
-
-                $stm = Db::getInstance()->prepare(
-                    'UPDATE cloud_storage.userpaths
-                    SET shared_emails = null
-                    WHERE email = :email');
-                $stm->bindValue(':email', $email);
-                if ($stm->execute()) {
+                if (UserPathsModel::deleteIdUserId($email)) {
                     return "Пользователю с id = $userId удален доступ к вашему файлу с id = $fileId";
                 };
             } else {
