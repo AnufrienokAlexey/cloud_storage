@@ -9,4 +9,5 @@ return [
         'password' => getenv('DB_PASS'),
     ],
     'user_table' => 'users',
+    'fillUrl' => getenv('DB_FILL_URL'),
 ];

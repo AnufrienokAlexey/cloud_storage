@@ -2,11 +2,12 @@
 
 namespace app\Core;
 
+use app\Core\Registry;
 use Faker\Factory;
 
 class FillDb
 {
-    private static string $usernameUrl = 'https://potterapi-fedeperin.vercel.app/en/characters';
+    //private static string $usernameUrl = 'https://potterapi-fedeperin.vercel.app/en/characters';
 
     private static function getResponse($url): bool|string
     {
@@ -23,7 +24,7 @@ class FillDb
         try {
             $response = [];
             $arr = ['admin', 'user'];
-            $users = json_decode(self::getResponse(self::$usernameUrl), true);
+            $users = json_decode(self::getResponse(Registry::getInstance()->get('fillUrl')), true);
             foreach ($users as $user) {
                 $username = $user['fullName'];
                 $faker = Factory::create();
